@@ -27,7 +27,8 @@ $pm->run_on_start(
 $pm->run_on_wait(
   sub {
     print "** Have to wait for one children ...\n"
-  }
+  },
+  0.5,
 );
 
 foreach my $child ( 0 .. $#names ) {

@@ -140,13 +140,19 @@ The parameters of the $code are the following:
   - pid of the process which has been started
   - identification of the process (if provided in the "start" method)
 
-=item run_on_wait $code
+=item run_on_wait $code, [$period]
 
 You can define a subroutine which is called when the child process needs to wait
-for the startup. One call is done per child, and this is called only
-in the "start" method, it is not called in "wait_all_children".
+for the startup. If $period is not defined, then one call is done per
+child. If $period is defined, then $code is called periodically and the
+module waits for $period seconds betwen the two calls. Note, $period can be
+fractional number also. The exact "$period seconds" is not guarranteed,
+signals can shorten and the process scheduler can make it longer (on busy
+systems).
 
-No parameters are passed to the $code.
+The $code called in the "start" and the "wait_all_children" method also.
+
+No parameters are passed to the $code on the call.
 
 =back
 
@@ -204,7 +210,8 @@ Example of a program using callbacks to get child exit codes:
   $pm->run_on_wait(
     sub {
       print "** Have to wait for one children ...\n"
-    }
+    },
+    0.5
   );
 
   foreach my $child ( 0 .. $#names ) {
@@ -251,7 +258,7 @@ package Parallel::ForkManager;
 use POSIX ":sys_wait_h";
 use strict;
 use vars qw($VERSION);
-$VERSION='0.7.3';
+$VERSION='0.7.4';
 
 sub new { my ($c,$processes)=@_;
   my $h={
@@ -267,7 +274,7 @@ sub start { my ($s,$identification)=@_;
     if $s->{in_child};
   while ( ( keys %{ $s->{processes} } ) >= $s->{max_proc}) {
     $s->on_wait;
-    $s->wait_one_child;
+    $s->wait_one_child(defined $s->{on_wait_period} ? &WNOHANG : undef);
   };
   $s->wait_children;
   if ($s->{max_proc}) {
@@ -318,7 +325,10 @@ sub wait_one_child { my ($s,$par)=@_;
 };
 
 sub wait_all_children { my ($s)=@_;
-  $s->wait_one_child while keys %{ $s->{processes} };
+  while (keys %{ $s->{processes} }) {
+    $s->on_wait;
+    $s->wait_one_child(defined $s->{on_wait_period} ? &WNOHANG : undef);
+  };
 }
 
 *wait_all_childs=*wait_all_children; # compatibility;
@@ -332,12 +342,19 @@ sub on_finish { my ($s,$pid,@par)=@_;
   $code->($pid,@par); 
 };
 
-sub run_on_wait { my ($s,$code)=@_;
+sub run_on_wait { my ($s,$code, $period)=@_;
   $s->{on_wait}=$code;
+  $s->{on_wait_period} = $period;
 }
 
 sub on_wait { my ($s)=@_;
-  $s->{on_wait}->() if ref($s->{on_wait}) eq 'CODE';
+  if(ref($s->{on_wait}) eq 'CODE') {
+    $s->{on_wait}->();
+    if (defined $s->{on_wait_period}) {
+        local $SIG{CHLD} = sub { } if ! defined $SIG{CHLD};
+        select undef, undef, undef, $s->{on_wait_period}
+    };
+  };
 };
 
 sub run_on_start { my ($s,$code)=@_;
