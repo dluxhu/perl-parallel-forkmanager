@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+0.7.3 Wed Oct 24 01:25:36 CEST 2001
+	- minor bugfix on calling the "on_finish" callback
+
 0.7.2 Mon May 14 15:38:55 CEST 2001
 	- win32 port
 	- fix for the broken wait_one_child

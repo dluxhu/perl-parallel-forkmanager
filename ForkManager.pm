@@ -243,7 +243,7 @@ and/or modify it under the same terms as Perl itself.
   Noah Robin <sitz@onastick.net> (documentation tweaks)
   Chuck Hirstius <chirstius@megapathdsl.net> (callback exit status, example)
   Grant Hopwood <hopwoodg@valero.com> (win32 port)
-  Mark Southern <mark_southern@merck.com>
+  Mark Southern <mark_southern@merck.com> (bugfix)
 
 =cut
 
