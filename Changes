@@ -1,0 +1,25 @@
+Revision history for Perl extension Parallel::ForkManager.
+
+0.7.2 Mon May 14 15:38:55 CEST 2001
+	- win32 port
+	- fix for the broken wait_one_child
+
+0.7.1 Thu Apr 26 13:28:30 CEST 2001
+	- various semantical and grammar fixes in the documentation
+	- on_finish now get the exit signal also
+	- on_start now get the process-identification also
+	- described limitations in the doc
+
+0.7  Wed Apr  4 12:52:53 CEST 2001
+	- callback code tested, exit status return (Chuck, dLux)
+	- added parallel_get.pl, a parallel webget example (dLux)
+	- added callbacks.pl, a callback example (Chuck, dLux)
+	- documentation updtes (Chuck, dLux)
+
+0.6  Thu Nov 30 11:56:15 CET 2000
+	- documentation tweak fixes by Noah Robin
+	- warning elimination fixes
+
+0.5  Wed Oct 18 16:24:59 2000
+	- original version; created by h2xs 1.19
+
