@@ -1,5 +1,9 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+0.7.5 Wed Dec 25 23:54:46 CET 2002
+	- Documentation fixes
+	- Fix bug if you specify max_procs = 0
+
 0.7.4 Thu Jul  4 23:00:46 CEST 2002
 	- on_wait callback now runs from the wait_all_children method
 	- run_on_wait can run a task periodically, not only once.

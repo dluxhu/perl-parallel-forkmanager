@@ -231,8 +231,16 @@ Example of a program using callbacks to get child exit codes:
 
 =head1 BUGS AND LIMITATIONS
 
-Do not use Parallel::ForkManager with fork and wait. Do not use more than one 
-copy of Parallel::ForkManager in one process!
+Do not use Parallel::ForkManager in an environment, where other child
+processes can affect the run of the main program, so using this module
+is not recommended in an environment where fork() / wait() is already used.
+
+If you want to use more than one copies of the Parallel::ForkManager, then
+you have to make sure that all children processes are terminated, before you
+use the second object in the main program.
+
+You are free to use a new copy of Parallel::ForkManager in the child
+processes, although I don't think it makes sense.
 
 =head1 COPYRIGHT
 
@@ -258,7 +266,7 @@ package Parallel::ForkManager;
 use POSIX ":sys_wait_h";
 use strict;
 use vars qw($VERSION);
-$VERSION='0.7.4';
+$VERSION='0.7.5';
 
 sub new { my ($c,$processes)=@_;
   my $h={
@@ -272,7 +280,7 @@ sub new { my ($c,$processes)=@_;
 sub start { my ($s,$identification)=@_;
   die "Cannot start another process while you are in the child process"
     if $s->{in_child};
-  while ( ( keys %{ $s->{processes} } ) >= $s->{max_proc}) {
+  while ($s->{max_proc} && ( keys %{ $s->{processes} } ) >= $s->{max_proc}) {
     $s->on_wait;
     $s->wait_one_child(defined $s->{on_wait_period} ? &WNOHANG : undef);
   };
@@ -297,6 +305,10 @@ sub start { my ($s,$identification)=@_;
 sub finish { my ($s, $x)=@_;
   if ( $s->{in_child} ) {
     exit ($x || 0);
+  }
+  if ($s->{max_proc} == 0) { # max_proc == 0
+    $s->on_finish($$, $x ,$s->{processes}->{$$}, 0, 0);
+    delete $s->{processes}->{$$};
   }
   return 0;
 }
