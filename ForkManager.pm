@@ -98,8 +98,7 @@ do anything.
 
 =item set_max_procs $processes
 
-Allows you to set a new maximum number of children to maintain. Returns 
-the previous setting.
+Allows you to set a new maximum number of children to maintain.
 
 =item wait_all_children
 
@@ -266,7 +265,7 @@ package Parallel::ForkManager;
 use POSIX ":sys_wait_h";
 use strict;
 use vars qw($VERSION);
-$VERSION='0.7.5';
+$VERSION='0.7.6';
 
 sub new { my ($c,$processes)=@_;
   my $h={
