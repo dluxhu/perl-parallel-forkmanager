@@ -303,7 +303,7 @@ sub start { my ($s,$identification)=@_;
 
 sub finish { my ($s, $x)=@_;
   if ( $s->{in_child} ) {
-    exit ($x || 0);
+    CORE::exit ($x || 0);
   }
   if ($s->{max_proc} == 0) { # max_proc == 0
     $s->on_finish($$, $x ,$s->{processes}->{$$}, 0, 0);
