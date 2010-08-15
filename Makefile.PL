@@ -4,4 +4,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     'NAME'	=> 'Parallel::ForkManager',
     'VERSION_FROM' => 'ForkManager.pm', # finds $VERSION
+    'dist' => {
+      PREOP => $^X.' -MPod::Text -e "pod2text(q(ForkManager.pm))" > README'
+    }
 );

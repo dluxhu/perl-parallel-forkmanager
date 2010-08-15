@@ -54,7 +54,7 @@ The code for a downloader would look something like this:
 
 First you need to instantiate the ForkManager with the "new" constructor.
 You must specify the maximum number of processes to be created. If you
-specify 0, then NO fork will be done; this is good for debugging purposes.  
+specify 0, then NO fork will be done; this is good for debugging purposes.
 
 Next, use $pm->start to do the fork. $pm returns 0 for the child process,
 and child pid for the parent process (see also L<perlfunc(1p)/fork()>).
@@ -70,8 +70,8 @@ you must instantiate another Parallel::ForkManager object!
 
 =head1 METHODS
 
-The comment letter(s) indicate where the method runs.  P for parent, C 
-for child.
+The comment letter indicates where the method should be run. P for parent,
+C for child.
 
 =over 5
 
@@ -79,17 +79,17 @@ for child.
 
 Instantiate a new Parallel::ForkManager object. You must specify the maximum
 number of children to fork off. If you specify 0 (zero), then no children
-will be forked.  This is intended for debugging purposes.  
+will be forked. This is intended for debugging purposes.
 
-The optional second parameter, $tempdir, is only used if you want the 
-children to send back a reference to some data (see RETRIEVING DATASTRUCTURES 
-below).  If not provided, it is set to $L<File::Spec>->tmpdir().
+The optional second parameter, $tempdir, is only used if you want the
+children to send back a reference to some data (see RETRIEVING DATASTRUCTURES
+below). If not provided, it is set to $L<File::Spec>->tmpdir().
 
-The new method will die if the temporary directory does not exist or it is not 
-a directory, whether you provided this parameter or the 
+The new method will die if the temporary directory does not exist or it is not
+a directory, whether you provided this parameter or the
 $L<File::Spec>->tmpdir() is used.
 
-=item start [ $process_identifier ]  # P, C (dies)
+=item start [ $process_identifier ]  # P
 
 This method does the fork. It returns the pid of the child process for
 the parent, and 0 for the child process. If the $processes parameter
@@ -100,13 +100,16 @@ An optional $process_identifier can be provided to this method... It is used by
 the "run_on_finish" callback (see CALLBACKS) for identifying the finished
 process.
 
-=item finish [ $exit_code [, $data_structure_reference] ]  # P, C
+=item finish [ $exit_code [, $data_structure_reference] ]  # C
 
 Closes the child process by exiting and accepts an optional exit code
 (default exit code is 0) which can be retrieved in the parent via callback.
-If the second optional parameter is provided, the child attempts to 
-send it's contents back to the parent.  If you use the program in debug mode 
-($processes == 0), this method doesn't do anything.  
+If the second optional parameter is provided, the child attempts to send
+it's contents back to the parent. If you use the program in debug mode
+($processes == 0), this method just calls the callback.
+
+If the $data_structure_reference is provided, then it is serialized and
+passed to the parent process. See RETRIEVING DATASTRUCTURES for more info.
 
 =item set_max_procs $processes  # P
 
@@ -122,7 +125,7 @@ forked. This is a blocking wait.
 =head1 CALLBACKS
 
 You can define callbacks in the code, which are called on events like starting
-a process or upon finish.  Declare these before the first call to start().
+a process or upon finish. Declare these before the first call to start().
 
 The callbacks can be defined with the following methods:
 
@@ -170,35 +173,36 @@ No parameters are passed to the $code on the call.
 
 =head1 RETRIEVING DATASTRUCTURES from child processes
 
-The ability for the parent to retrieve data structures is new as of 
-version 0.7.6.
+The ability for the parent to retrieve data structures is new as of version
+0.7.6.
 
-Each child process may optionally send 1 data structure back to the 
-parent.  By data structure, we mean a reference to a string, 
-hash or array.  The contents of the data structure are written out 
-to temporary files on disc using the L<Storable> modules' store() 
-method.  The reference is then retrieved from within the code you 
-send to the run_on_finish callback.
+Each child process may optionally send 1 data structure back to the parent.
+By data structure, we mean a reference to a string, hash or array. The
+contents of the data structure are written out to temporary files on disc
+using the L<Storable> modules' store() method. The reference is then
+retrieved from within the code you send to the run_on_finish callback.
 
-There are 2 additional steps involved in retrieving data structures: 
+The data structure can be any scalar perl data structure which makes sense:
+string, numeric value or a reference to an array, hash or object.
 
-1) A reference to the data structure the child wishes to send back to the 
-parent is provided as the second argument to the finish() call.  It is up 
+There are 2 steps involved in retrieving data structures:
+
+1) A reference to the data structure the child wishes to send back to the
+parent is provided as the second argument to the finish() call. It is up
 to the child to decide whether or not to send anything back to the parent.
 
-2) The data structure reference is retrieved using the run_on_finish() method.
+2) The data structure reference is retrieved using the callback provided in
+the run_on_finish() method.
 
-Keep in mind that data structure retrieval only emulates a child process 
-"returning" a reference.  That is not what actually occurs.  The data 
-structure referenced in a given child process is serialized and written 
-out to a file by L<Storable>.  The file is subsequently read back into 
-memory and a new data structure belonging to the parent process is created.  
-Besides, by the time the parent gets it, the child has exited, so even if 
-we could get a reference back, it would point to thin air.
+Keep in mind that data structure retrieval is not the same as returning a
+data structure from a method call. That is not what actually occurs. The
+data structure referenced in a given child process is serialized and
+written out to a file by L<Storable>. The file is subsequently read back
+into memory and a new data structure belonging to the parent process is
+created. Please consider the performance penality it can imply, so try to
+keep the returned structure small.
 
-=back
-
-=head1 EXAMPLE
+=head1 EXAMPLES
 
 =head2 Parallel get
 
@@ -271,7 +275,7 @@ Example of a program using callbacks to get child exit codes:
   $pm->wait_all_children;
   print "Everybody is out of the pool!\n";
 
-=head2 Data structure retrieval.  
+=head2 Data structure retrieval
 
 In this simple example, each child sends back a string reference.
 
@@ -312,8 +316,8 @@ In this simple example, each child sends back a string reference.
   }
   $pm->wait_all_children;
 
-A second datastructure retrieval example demonstrates how children decide 
-whether or not to send anything back, what to send and how the parent should 
+A second datastructure retrieval example demonstrates how children decide
+whether or not to send anything back, what to send and how the parent should
 process whatever is retrieved.
 
 =for example begin
@@ -326,7 +330,7 @@ process whatever is retrieved.
   
   # data structure retrieval and handling
   my %retrieved_responses = ();  # for collecting responses
-  $pm -> run_on_finish ( 
+  $pm -> run_on_finish (
     sub {
       my ($pid, $exit_code, $ident, $exit_signal, $core_dump, $data_structure_reference) = @_;
   
@@ -411,7 +415,7 @@ processes, although I don't think it makes sense.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000 Szabó, Balázs (dLux)
+Copyright (c) 2000-2010 Szabó, Balázs (dLux)
 
 All right reserved. This program is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.
@@ -436,7 +440,7 @@ use Storable qw(store retrieve);
 use File::Spec;
 use strict;
 use vars qw($VERSION);
-$VERSION=0.7.6;
+$VERSION='0.7.6';
 
 sub new { my ($c,$processes, $tempdir)=@_;
   my $h={
@@ -490,10 +494,10 @@ sub finish { my ($s, $x, $r)=@_;
         warn(qq|The storable module was unable to store the child's data structure to the temp file "$storable_tempfile":  | . join(', ', $@));
       }
     }
-    exit ($x || 0);
+    CORE::exit($x || 0);
   }
   if ($s->{max_proc} == 0) { # max_proc == 0
-    $s->on_finish($$, $x ,$s->{processes}->{$$}, 0, 0);
+    $s->on_finish($$, $x ,$s->{processes}->{$$}, 0, 0, $r);
     delete $s->{processes}->{$$};
   }
   return 0;
@@ -582,7 +586,6 @@ sub on_start { my ($s,@par)=@_;
 sub set_max_procs { my ($s, $mp)=@_;
   $s->{max_proc} = $mp;
 }
-
 
 # OS dependant code follows...
 

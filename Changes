@@ -1,5 +1,9 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+0.7.6 Sun Aug 15 12:42:21 CEST 2010
+	- Added datastructure retrieval (Ken Clarke)
+	- Using CORE::exit instead of exit (http://rt.cpan.org/Public/Bug/Display.html?id=39003)
+
 0.7.5 Wed Dec 25 23:54:46 CET 2002
 	- Documentation fixes
 	- Fix bug if you specify max_procs = 0
