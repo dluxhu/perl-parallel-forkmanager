@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+0.7.7 Tue Sep 28 00:09:15 CEST 2010
+	- Small distribution fixes
+
 0.7.6 Sun Aug 15 12:42:21 CEST 2010
 	- Added datastructure retrieval (Ken Clarke)
 	- Using CORE::exit instead of exit (http://rt.cpan.org/Public/Bug/Display.html?id=39003)

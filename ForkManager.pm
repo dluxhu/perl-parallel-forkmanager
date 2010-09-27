@@ -422,7 +422,7 @@ and/or modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-  dLux (Szabó, Balázs) <dlux@kapu.hu>
+  dLux (Szabó, Balázs) <dlux@dlux.hu>
 
 =head1 CREDITS
 
@@ -440,7 +440,7 @@ use Storable qw(store retrieve);
 use File::Spec;
 use strict;
 use vars qw($VERSION);
-$VERSION='0.7.6';
+$VERSION='0.7.7';
 
 sub new { my ($c,$processes, $tempdir)=@_;
   my $h={
