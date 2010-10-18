@@ -440,7 +440,8 @@ use Storable qw(store retrieve);
 use File::Spec;
 use strict;
 use vars qw($VERSION);
-$VERSION='0.7.7';
+$VERSION="0.7.8";
+$VERSION = eval $VERSION;
 
 sub new { my ($c,$processes, $tempdir)=@_;
   my $h={
