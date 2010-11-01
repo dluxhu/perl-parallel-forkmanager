@@ -2,6 +2,7 @@ TODO
 Changes
 lib/Parallel/ForkManager.pm
 MANIFEST
+README
 Makefile.PL
 test.pl
 examples/parallel_get.pl
