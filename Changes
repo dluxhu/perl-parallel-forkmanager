@@ -1,5 +1,9 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+0.7.9 Mon Nov  1 18:47:54 CET 2010
+        - Move example scripts to the 'examples' directory.
+	  (https://rt.cpan.org/Public/Bug/Display.html?id=62506)
+
 0.7.8 Mon Oct 25 18:39:05 CEST 2010
 	- Make $VERSION compatible with the most perl versions possible
 	  (http://rt.cpan.org/Public/Bug/Display.html?id=62180)
