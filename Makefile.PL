@@ -3,8 +3,8 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'	=> 'Parallel::ForkManager',
-    'VERSION_FROM' => 'ForkManager.pm', # finds $VERSION
+    'VERSION_FROM' => 'lib/Parallel/ForkManager.pm', # finds $VERSION
     'dist' => {
-      PREOP => $^X.' -MPod::Text -e "pod2text(q(ForkManager.pm))" > README'
+      PREOP => $^X.' -MPod::Text -e "pod2text(q(lib/Parallel/ForkManager.pm))" > README'
     }
 );

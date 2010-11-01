@@ -1,8 +1,8 @@
 TODO
 Changes
-ForkManager.pm
+lib/Parallel/ForkManager.pm
 MANIFEST
 Makefile.PL
 test.pl
-ForkManager/parallel_get.pl
-ForkManager/callback.pl
+examples/parallel_get.pl
+examples/callback.pl
