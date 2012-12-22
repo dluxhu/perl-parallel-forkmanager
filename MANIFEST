@@ -4,6 +4,7 @@ lib/Parallel/ForkManager.pm
 MANIFEST
 README
 Makefile.PL
-test.pl
+t/00-load.t
+t/01-utf8-all.t
 examples/parallel_get.pl
 examples/callback.pl
