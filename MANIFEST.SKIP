@@ -1,0 +1,17 @@
+^(.*/)?CVS/.*
+^.git
+^.cvsignore
+^.hg
+^Makefile(.old)?$
+^Build$
+^Clean$
+^RollingBuild$
+^blib/.*
+^pm_to_blib$
+^(.*/)?.cvsignore$
+^MANIFEST.bak$
+^*~$
+^make[-.]pm$
+^INFO.yaml$
+^_build/
+^MYMETA.*
