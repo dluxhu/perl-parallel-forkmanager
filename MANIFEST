@@ -6,5 +6,7 @@ README
 Makefile.PL
 t/00-load.t
 t/01-utf8-all.t
+t/02-callback.t
+t/callback.txt
 examples/parallel_get.pl
 examples/callback.pl
