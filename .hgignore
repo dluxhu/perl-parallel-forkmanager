@@ -4,3 +4,4 @@ Makefile.old
 .*.tar.gz
 blib
 MYMETA.*
+MANIFEST.bak
