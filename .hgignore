@@ -4,5 +4,8 @@ Makefile.old
 .*.tar.gz
 blib
 MYMETA.*
+META.yml
+META.json
+MANIFEST
 MANIFEST.bak
 .*.swp
