@@ -5,3 +5,4 @@ Makefile.old
 blib
 MYMETA.*
 MANIFEST.bak
+.*.swp
