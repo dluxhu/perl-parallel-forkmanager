@@ -7,7 +7,7 @@ my $max_procs = 3; # 5
 my @names = qw( Fred Jim Lily Steve Jessica Bob ); # Dave Christine Rico Sara );
 # hash to resolve PID's back to child specific information
 
-my $pm =  new Parallel::ForkManager($max_procs);
+my $pm = Parallel::ForkManager->new($max_procs);
 
 # Setup a callback for when a child finishes up so we can
 # get it's exit code

@@ -6,7 +6,7 @@ Parallel::ForkManager - A simple parallel processing fork manager
 
   use Parallel::ForkManager;
 
-  $pm = new Parallel::ForkManager($MAX_PROCESSES);
+  $pm = Parallel::ForkManager->new($MAX_PROCESSES);
 
   foreach $data (@all_data) {
     # Forks and returns the pid for the child:
@@ -39,7 +39,7 @@ The code for a downloader would look something like this:
   ...
 
   # Max 30 processes for parallel download
-  my $pm = new Parallel::ForkManager(30);
+  my $pm = Parallel::ForkManager->new(30);
 
   foreach my $linkarray (@links) {
     $pm->start and next; # do the fork
@@ -210,7 +210,7 @@ This small example can be used to get URLs in parallel.
 
   use Parallel::ForkManager;
   use LWP::Simple;
-  my $pm=new Parallel::ForkManager(10);
+  my $pm= Parallel::ForkManager->new(10);
   for my $link (@ARGV) {
     $pm->start and next;
     my ($fn)= $link =~ /^.*\/(.*?)$/;
@@ -236,7 +236,7 @@ Example of a program using callbacks to get child exit codes:
   my @names = qw( Fred Jim Lily Steve Jessica Bob Dave Christine Rico Sara );
   # hash to resolve PID's back to child specific information
 
-  my $pm = new Parallel::ForkManager($max_procs);
+  my $pm = Parallel::ForkManager->new($max_procs);
 
   # Setup a callback for when a child finishes up so we can
   # get it's exit code
@@ -282,7 +282,7 @@ In this simple example, each child sends back a string reference.
   use Parallel::ForkManager 0.7.6;
   use strict;
   
-  my $pm = new Parallel::ForkManager(2, '/server/path/to/temp/dir/');
+  my $pm = Parallel::ForkManager->new(2, '/server/path/to/temp/dir/');
   
   # data structure retrieval and handling
   $pm -> run_on_finish ( # called BEFORE the first call to start()
@@ -326,7 +326,7 @@ process whatever is retrieved.
   use Data::Dumper;  # to display the data structures retrieved.
   use strict;
   
-  my $pm = new Parallel::ForkManager(20);  # using the system temp dir $L<File::Spec>->tmpdir()
+  my $pm = Parallel::ForkManager->new(20);  # using the system temp dir $L<File::Spec>->tmpdir()
   
   # data structure retrieval and handling
   my %retrieved_responses = ();  # for collecting responses
