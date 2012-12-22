@@ -2,9 +2,25 @@ use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 WriteMakefile(
-    'NAME'	=> 'Parallel::ForkManager',
-    'VERSION_FROM' => 'lib/Parallel/ForkManager.pm', # finds $VERSION
-    'dist' => {
+    NAME	      => 'Parallel::ForkManager',
+    VERSION_FROM  => 'lib/Parallel/ForkManager.pm', # finds $VERSION
+    ABSTRACT_FROM => 'lib/Parallel/ForkManager.pm',
+    AUTHOR        => 'Balazs Szabo (dLux)',
+    LICENSE       => 'perl',
+    PREREQ_PM     => { 
+           'POSIX'          => 0,
+           'Storable'       => 0,
+           'File::Spec'     => 0,
+    },
+    BUILD_REQUIRES => {
+           'Test::More'     => '0.80',
+    },
+    META_MERGE        => {
+       resources => {
+           repository  =>  'http://code.google.com/p/perl-parallel-forkmanager/',
+       },
+    },
+    dist => {
       PREOP => $^X.' -MPod::Text -e "pod2text(q(lib/Parallel/ForkManager.pm))" > README'
     }
 );
