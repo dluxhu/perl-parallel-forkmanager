@@ -3,8 +3,8 @@ use lib '.';
 use strict;
 use Parallel::ForkManager;
 
-my $max_procs = 3; # 5
-my @names = qw( Fred Jim Lily Steve Jessica Bob ); # Dave Christine Rico Sara );
+my $max_procs = 3;
+my @names = qw( Fred Jim Lily Steve Jessica Bob );
 # hash to resolve PID's back to child specific information
 
 my $pm = Parallel::ForkManager->new($max_procs);
