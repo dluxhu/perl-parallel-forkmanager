@@ -1,5 +1,9 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.01 Sun Dec 23 21:30:30 2012
+    - Disable utf8 test on Windows where it is a perl bug.
+    - Change version number scheme to two parts.
+
 1.0.0 Sun Dec 23 12:25:46 2012
     - Fixing RT 68298 - Insecure /tmp file handling using
         File::Temp::tempdir by John Lightsey (LIGHTSEY)

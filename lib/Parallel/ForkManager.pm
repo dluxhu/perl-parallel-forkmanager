@@ -439,7 +439,7 @@ use File::Temp ();
 use File::Path ();
 use strict;
 use vars qw($VERSION);
-$VERSION="1.0.0";
+$VERSION="1.01";
 $VERSION = eval $VERSION;
 
 sub new {
