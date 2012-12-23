@@ -1,0 +1,5 @@
+Fred started
+Jim started
+Fred just got out of the pool with exit code: 0 and data: Fred 4
+Jim just got out of the pool with exit code: 1 and data: Jim 3
+Everybody is out of the pool!
