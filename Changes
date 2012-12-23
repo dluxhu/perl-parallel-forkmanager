@@ -1,5 +1,10 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+    - Fixing RT 68298 - Insecure /tmp file handling using
+        File::Temp::tempdir by John Lightsey (LIGHTSEY)
+    - Adding another callback example and several tests
+        Gabor Szabo (SZABGAB)
+
 0.7.9 Mon Nov  1 19:06:21 CET 2010
         - Exclude the example scripts from getting installed.
 	  (https://rt.cpan.org/Public/Bug/Display.html?id=62506)
