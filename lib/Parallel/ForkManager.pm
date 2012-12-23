@@ -624,10 +624,10 @@ sub _NT_waitpid { my ($s, $pid, $par) = @_;
 }
 
 sub DESTROY {
-    my $self = shift;
-    if ($self->{parent_pid} == $$ && -d $self->{tempdir}) {
-        File::Path::remove_tree($self->{tempdir});
-    }
+  my $self = shift;
+  if ($self->{parent_pid} == $$ && -d $self->{tempdir}) {
+    File::Path::remove_tree($self->{tempdir});
+  }
 }
 
 1;

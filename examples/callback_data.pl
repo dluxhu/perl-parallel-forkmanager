@@ -12,17 +12,15 @@ my $pm = Parallel::ForkManager->new($max_procs);
 # Setup a callback for when a child finishes up so we can
 # get it's exit code and any data it collected
 $pm->run_on_finish( sub {
-    my ($pid, $exit_code, $ident, $exit_signal, $core_dump, $data_structure_reference) = @_;
-    print "$ident just got out of the pool ".
-      "with exit code: $exit_code and data: @$data_structure_reference\n";
-  }
-);
+  my ($pid, $exit_code, $ident, $exit_signal, $core_dump, $data_structure_reference) = @_;
+  print "$ident just got out of the pool ".
+    "with exit code: $exit_code and data: @$data_structure_reference\n";
+});
 
 $pm->run_on_start( sub {
-    my ($pid,$ident)=@_;
-    print "$ident started\n";
-  }
-);
+  my ($pid,$ident)=@_;
+  print "$ident started\n";
+});
 
 foreach my $child ( 0 .. $#names ) {
   my $pid = $pm->start($names[$child]) and next;
