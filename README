@@ -4,7 +4,7 @@ NAME
 SYNOPSIS
       use Parallel::ForkManager;
 
-      $pm = new Parallel::ForkManager($MAX_PROCESSES);
+      $pm = Parallel::ForkManager->new($MAX_PROCESSES);
 
       foreach $data (@all_data) {
         # Forks and returns the pid for the child:
@@ -37,7 +37,7 @@ DESCRIPTION
       ...
 
       # Max 30 processes for parallel download
-      my $pm = new Parallel::ForkManager(30);
+      my $pm = Parallel::ForkManager->new(30);
 
       foreach my $linkarray (@links) {
         $pm->start and next; # do the fork
@@ -80,11 +80,11 @@ METHODS
          The optional second parameter, $tempdir, is only used if you want
          the children to send back a reference to some data (see RETRIEVING
          DATASTRUCTURES below). If not provided, it is set to
-         $File::Spec->tmpdir().
+         $File::Temp::tempdir().
 
          The new method will die if the temporary directory does not exist
          or it is not a directory, whether you provided this parameter or
-         the $File::Spec->tmpdir() is used.
+         the $"File::Temp::tempdir() is used."
 
     start [ $process_identifier ] # P
          This method does the fork. It returns the pid of the child process
@@ -197,7 +197,7 @@ EXAMPLES
 
       use Parallel::ForkManager;
       use LWP::Simple;
-      my $pm=new Parallel::ForkManager(10);
+      my $pm= Parallel::ForkManager->new(10);
       for my $link (@ARGV) {
         $pm->start and next;
         my ($fn)= $link =~ /^.*\/(.*?)$/;
@@ -222,25 +222,22 @@ EXAMPLES
       my @names = qw( Fred Jim Lily Steve Jessica Bob Dave Christine Rico Sara );
       # hash to resolve PID's back to child specific information
 
-      my $pm = new Parallel::ForkManager($max_procs);
+      my $pm = Parallel::ForkManager->new($max_procs);
 
       # Setup a callback for when a child finishes up so we can
       # get it's exit code
-      $pm->run_on_finish(
-        sub { my ($pid, $exit_code, $ident) = @_;
+      $pm->run_on_finish( sub {
+          my ($pid, $exit_code, $ident) = @_;
           print "** $ident just got out of the pool ".
             "with PID $pid and exit code: $exit_code\n";
-        }
-      );
+      });
 
-      $pm->run_on_start(
-        sub { my ($pid,$ident)=@_;
+      $pm->run_on_start( sub {
+          my ($pid,$ident)=@_;
           print "** $ident started, pid: $pid\n";
-        }
-      );
+      });
 
-      $pm->run_on_wait(
-        sub {
+      $pm->run_on_wait( sub {
           print "** Have to wait for one children ...\n"
         },
         0.5
@@ -267,7 +264,7 @@ EXAMPLES
       use Parallel::ForkManager 0.7.6;
       use strict;
   
-      my $pm = new Parallel::ForkManager(2, '/server/path/to/temp/dir/');
+      my $pm = Parallel::ForkManager->new(2, '/server/path/to/temp/dir/');
   
       # data structure retrieval and handling
       $pm -> run_on_finish ( # called BEFORE the first call to start()
@@ -309,7 +306,7 @@ EXAMPLES
       use Data::Dumper;  # to display the data structures retrieved.
       use strict;
   
-      my $pm = new Parallel::ForkManager(20);  # using the system temp dir $L<File::Spec>->tmpdir()
+      my $pm = Parallel::ForkManager->new(20);  # using the system temp dir $L<File::Temp::tempdir()
   
       # data structure retrieval and handling
       my %retrieved_responses = ();  # for collecting responses
@@ -409,4 +406,18 @@ CREDITS
       Grant Hopwood <hopwoodg@valero.com> (win32 port)
       Mark Southern <mark_southern@merck.com> (bugfix)
       Ken Clarke <www.perlprogrammer.net>  (datastructure retrieval)
+
+POD ERRORS
+    Hey! The above document had some coding errors, which are explained
+    below:
+
+    Around line 84:
+        Unterminated L<...> sequence
+
+    Around line 88:
+        Unterminated L<...> sequence
+
+    Around line 415:
+        Non-ASCII character seen before =encoding in 'Szabó,'. Assuming
+        ISO8859-1
 
