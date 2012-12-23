@@ -240,21 +240,18 @@ Example of a program using callbacks to get child exit codes:
 
   # Setup a callback for when a child finishes up so we can
   # get it's exit code
-  $pm->run_on_finish(
-    sub { my ($pid, $exit_code, $ident) = @_;
+  $pm->run_on_finish( sub {
+      my ($pid, $exit_code, $ident) = @_;
       print "** $ident just got out of the pool ".
         "with PID $pid and exit code: $exit_code\n";
-    }
-  );
+  });
 
-  $pm->run_on_start(
-    sub { my ($pid,$ident)=@_;
+  $pm->run_on_start( sub {
+      my ($pid,$ident)=@_;
       print "** $ident started, pid: $pid\n";
-    }
-  );
+  });
 
-  $pm->run_on_wait(
-    sub {
+  $pm->run_on_wait( sub {
       print "** Have to wait for one children ...\n"
     },
     0.5
@@ -445,7 +442,9 @@ use vars qw($VERSION);
 $VERSION="0.7.10";
 $VERSION = eval $VERSION;
 
-sub new { my ($c,$processes, $tempdir)=@_;
+sub new {
+  my ($c,$processes, $tempdir)=@_;
+
   my $h={
     max_proc   => $processes,
     processes  => {},
@@ -462,7 +461,9 @@ sub new { my ($c,$processes, $tempdir)=@_;
   return bless($h,ref($c)||$c);
 };
 
-sub start { my ($s,$identification)=@_;
+sub start {
+  my ($s,$identification)=@_;
+
   die "Cannot start another process while you are in the child process"
     if $s->{in_child};
   while ($s->{max_proc} && ( keys %{ $s->{processes} } ) >= $s->{max_proc}) {
@@ -487,7 +488,9 @@ sub start { my ($s,$identification)=@_;
   }
 }
 
-sub finish { my ($s, $x, $r)=@_;
+sub finish {
+  my ($s, $x, $r)=@_;
+
   if ( $s->{in_child} ) {
     if (defined($r)) {  # store the child's data structure
       my $storable_tempfile = File::Spec->catfile($s->{tempdir}, 'Parallel-ForkManager-' . $s->{parent_pid} . '-' . $$ . '.txt');
@@ -507,7 +510,9 @@ sub finish { my ($s, $x, $r)=@_;
   return 0;
 }
 
-sub wait_children { my ($s)=@_;
+sub wait_children {
+  my ($s)=@_;
+
   return if !keys %{$s->{processes}};
   my $kid;
   do {
@@ -517,7 +522,9 @@ sub wait_children { my ($s)=@_;
 
 *wait_childs=*wait_children; # compatibility
 
-sub wait_one_child { my ($s,$par)=@_;
+sub wait_one_child {
+  my ($s,$par)=@_;
+
   my $kid;
   while (1) {
     $kid = $s->_waitpid(-1,$par||=0);
@@ -546,7 +553,9 @@ sub wait_one_child { my ($s,$par)=@_;
   $kid;
 };
 
-sub wait_all_children { my ($s)=@_;
+sub wait_all_children {
+  my ($s)=@_;
+
   while (keys %{ $s->{processes} }) {
     $s->on_wait;
     $s->wait_one_child(defined $s->{on_wait_period} ? &WNOHANG : undef);
@@ -555,21 +564,29 @@ sub wait_all_children { my ($s)=@_;
 
 *wait_all_childs=*wait_all_children; # compatibility;
 
-sub run_on_finish { my ($s,$code,$pid)=@_;
+sub run_on_finish {
+  my ($s,$code,$pid)=@_;
+
   $s->{on_finish}->{$pid || 0}=$code;
 }
 
-sub on_finish { my ($s,$pid,@par)=@_;
+sub on_finish {
+  my ($s,$pid,@par)=@_;
+
   my $code=$s->{on_finish}->{$pid} || $s->{on_finish}->{0} or return 0;
   $code->($pid,@par);
 };
 
-sub run_on_wait { my ($s,$code, $period)=@_;
+sub run_on_wait {
+  my ($s,$code, $period)=@_;
+
   $s->{on_wait}=$code;
   $s->{on_wait_period} = $period;
 }
 
-sub on_wait { my ($s)=@_;
+sub on_wait {
+  my ($s)=@_;
+
   if(ref($s->{on_wait}) eq 'CODE') {
     $s->{on_wait}->();
     if (defined $s->{on_wait_period}) {
@@ -579,15 +596,21 @@ sub on_wait { my ($s)=@_;
   };
 };
 
-sub run_on_start { my ($s,$code)=@_;
+sub run_on_start {
+  my ($s,$code)=@_;
+
   $s->{on_start}=$code;
 }
 
-sub on_start { my ($s,@par)=@_;
+sub on_start {
+  my ($s,@par)=@_;
+
   $s->{on_start}->(@par) if ref($s->{on_start}) eq 'CODE';
 };
 
-sub set_max_procs { my ($s, $mp)=@_;
+sub set_max_procs {
+  my ($s, $mp)=@_;
+
   $s->{max_proc} = $mp;
 }
 
@@ -599,7 +622,9 @@ sub _waitpid { # Call waitpid() in the standard Unix fashion.
 
 # On ActiveState Perl 5.6/Win32 build 625, waitpid(-1, &WNOHANG) always
 # blocks unless an actual PID other than -1 is given.
-sub _NT_waitpid { my ($s, $pid, $par) = @_;
+sub _NT_waitpid {
+  my ($s, $pid, $par) = @_;
+
   if ($par == &WNOHANG) { # Need to nonblock on each of our PIDs in the pool.
     my @pids = keys %{ $s->{processes} };
     # Simulate -1 (no processes awaiting cleanup.)
@@ -624,7 +649,8 @@ sub _NT_waitpid { my ($s, $pid, $par) = @_;
 }
 
 sub DESTROY {
-  my $self = shift;
+  my ($self) = @_;
+
   if ($self->{parent_pid} == $$ && -d $self->{tempdir}) {
     File::Path::remove_tree($self->{tempdir});
   }
