@@ -83,11 +83,11 @@ will be forked. This is intended for debugging purposes.
 
 The optional second parameter, $tempdir, is only used if you want the
 children to send back a reference to some data (see RETRIEVING DATASTRUCTURES
-below). If not provided, it is set to $L<File::Spec>->tmpdir().
+below). If not provided, it is set to $L<File::Temp::tempdir().
 
 The new method will die if the temporary directory does not exist or it is not
 a directory, whether you provided this parameter or the
-$L<File::Spec>->tmpdir() is used.
+$L<File::Temp::tempdir() is used.
 
 =item start [ $process_identifier ]  # P
 
@@ -326,7 +326,7 @@ process whatever is retrieved.
   use Data::Dumper;  # to display the data structures retrieved.
   use strict;
   
-  my $pm = Parallel::ForkManager->new(20);  # using the system temp dir $L<File::Spec>->tmpdir()
+  my $pm = Parallel::ForkManager->new(20);  # using the system temp dir $L<File::Temp::tempdir()
   
   # data structure retrieval and handling
   my %retrieved_responses = ();  # for collecting responses
@@ -438,6 +438,8 @@ package Parallel::ForkManager;
 use POSIX ":sys_wait_h";
 use Storable qw(store retrieve);
 use File::Spec;
+use File::Temp ();
+use File::Path ();
 use strict;
 use vars qw($VERSION);
 $VERSION="0.7.10";
@@ -452,9 +454,10 @@ sub new { my ($c,$processes, $tempdir)=@_;
   };
   
   # determine temporary directory for storing data structures
-  $tempdir = File::Spec->tmpdir() unless (defined($tempdir) && length($tempdir));
-  die qq|Temporary directory "$tempdir" doesn't exist or is not a directory.| unless (-e $tempdir && -d _);  # ensure temp dir exists and is indeed a directory
-  $h->{tempdir} = $tempdir;  # add tempdir to Parallel::ForkManager object so children can use it
+  # add it to Parallel::ForkManager object so children can use it
+  # We don't let it clean up so it won't do it in the child process
+  # but we have our own DESTROY to do that.
+  $h->{tempdir} = File::Temp::tempdir(CLEANUP => 0);
   
   return bless($h,ref($c)||$c);
 };
@@ -618,6 +621,13 @@ sub _NT_waitpid { my ($s, $pid, $par) = @_;
   if ($^O eq 'NT' or $^O eq 'MSWin32') {
     *_waitpid = \&_NT_waitpid;
   }
+}
+
+sub DESTROY {
+    my $self = shift;
+    if ($self->{parent_pid} == $$ && -d $self->{tempdir}) {
+        File::Path::remove_tree($self->{tempdir});
+    }
 }
 
 1;

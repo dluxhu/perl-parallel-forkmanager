@@ -7,10 +7,12 @@ WriteMakefile(
     ABSTRACT_FROM => 'lib/Parallel/ForkManager.pm',
     AUTHOR        => 'Balazs Szabo (dLux)',
     LICENSE       => 'perl',
-    PREREQ_PM     => { 
+    PREREQ_PM     => {
            'POSIX'          => 0,
            'Storable'       => 0,
            'File::Spec'     => 0,
+           'File::Temp'     => 0,
+           'File::Path'     => 0,
     },
     BUILD_REQUIRES => {
            'Test::More'     => '0.80',
