@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.02 Mon Dec 24 13:27:03 2012
+    - Fix test for Windows.
+
 1.01 Sun Dec 23 21:30:30 2012
     - Disable utf8 test on Windows where it is a perl bug.
     - Change version number scheme to two parts.
