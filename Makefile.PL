@@ -24,6 +24,11 @@ WriteMakefile(
        x_contributors => [
            'SZABGAB',
            'Michael Gang',
+           'Noah Robin <sitz@onastick.net>',
+           'Chuck Hirstius <chirstius@megapathdsl.net>',
+           'Grant Hopwood <hopwoodg@valero.com>',
+           'Mark Southern <mark_southern@merck.com>',
+           'Ken Clarke <www.perlprogrammer.net>',
        ],
     },
     dist => {
