@@ -81,6 +81,14 @@ Instantiate a new Parallel::ForkManager object. You must specify the maximum
 number of children to fork off. If you specify 0 (zero), then no children
 will be forked. This is intended for debugging purposes.
 
+The optional second parameter, $tempdir, is only used if you want the
+children to send back a reference to some data (see RETRIEVING DATASTRUCTURES
+below). If not provided, it is set to $L<File::Spec>->tmpdir().
+ 
+The new method will die if the temporary directory does not exist or it is not
+a directory, whether you provided this parameter or the
+$L<File::Spec>->tmpdir() is used.
+
 =item start [ $process_identifier ]
 
 This method does the fork. It returns the pid of the child process for
@@ -437,7 +445,7 @@ $VERSION="1.03";
 $VERSION = eval $VERSION;
 
 sub new {
-  my ($c,$processes)=@_;
+  my ($c,$processes,$tempdir)=@_;
 
   my $h={
     max_proc   => $processes,
@@ -446,11 +454,16 @@ sub new {
     parent_pid => $$,
   };
   
+
   # determine temporary directory for storing data structures
   # add it to Parallel::ForkManager object so children can use it
   # We don't let it clean up so it won't do it in the child process
   # but we have our own DESTROY to do that.
-  $h->{tempdir} = File::Temp::tempdir(CLEANUP => 0);
+  if (not defined($tempdir) or not length($tempdir)) {
+    $tempdir = File::Temp::tempdir(CLEANUP => 0);
+  }
+  die qq|Temporary directory "$tempdir" doesn't exist or is not a directory.| unless (-e $tempdir && -d _);  # ensure temp dir exists and is indeed a directory
+  $h->{tempdir} = $tempdir;
   
   return bless($h,ref($c)||$c);
 };
