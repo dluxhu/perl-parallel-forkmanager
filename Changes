@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.03
+    - Remove second parameter from new() that was unused. (Michael Gang)
+
 1.02 Mon Dec 24 13:27:03 2012
     - Fix test for Windows.
 

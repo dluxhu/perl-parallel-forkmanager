@@ -21,6 +21,10 @@ WriteMakefile(
        resources => {
            repository  =>  'http://code.google.com/p/perl-parallel-forkmanager/',
        },
+       x_contributors => [
+           'SZABGAB',
+           'Michael Gang',
+       ],
     },
     dist => {
       PREOP => $^X.' -MPod::Text -e "pod2text(q(lib/Parallel/ForkManager.pm))" > README'

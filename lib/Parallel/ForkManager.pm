@@ -75,19 +75,11 @@ C for child.
 
 =over 5
 
-=item new $processes [, $tempdir]  # P
+=item new $processes # P
 
 Instantiate a new Parallel::ForkManager object. You must specify the maximum
 number of children to fork off. If you specify 0 (zero), then no children
 will be forked. This is intended for debugging purposes.
-
-The optional second parameter, $tempdir, is only used if you want the
-children to send back a reference to some data (see RETRIEVING DATASTRUCTURES
-below). If not provided, it is set to $L<File::Temp::tempdir().
-
-The new method will die if the temporary directory does not exist or it is not
-a directory, whether you provided this parameter or the
-$L<File::Temp::tempdir() is used.
 
 =item start [ $process_identifier ]  # P
 
@@ -443,7 +435,7 @@ $VERSION="1.02";
 $VERSION = eval $VERSION;
 
 sub new {
-  my ($c,$processes, $tempdir)=@_;
+  my ($c,$processes)=@_;
 
   my $h={
     max_proc   => $processes,
