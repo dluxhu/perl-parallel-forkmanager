@@ -83,11 +83,10 @@ will be forked. This is intended for debugging purposes.
 
 The optional second parameter, $tempdir, is only used if you want the
 children to send back a reference to some data (see RETRIEVING DATASTRUCTURES
-below). If not provided, it is set to $L<File::Spec>->tmpdir().
- 
+below). If not provided, it is set via a call to L<File::Temp>::tempdir().
+
 The new method will die if the temporary directory does not exist or it is not
-a directory, whether you provided this parameter or the
-$L<File::Spec>->tmpdir() is used.
+a directory.
 
 =item start [ $process_identifier ]
 
