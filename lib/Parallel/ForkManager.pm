@@ -136,7 +136,7 @@ The callbacks can be defined with the following methods:
 You can define a subroutine which is called when a child is terminated. It is
 called in the parent process.
 
-The paremeters of the $code are the following:
+The parameters of the $code are the following:
 
   - pid of the process, which is terminated
   - exit code of the program
@@ -160,8 +160,8 @@ The parameters of the $code are the following:
 You can define a subroutine which is called when the child process needs to wait
 for the startup. If $period is not defined, then one call is done per
 child. If $period is defined, then $code is called periodically and the
-module waits for $period seconds betwen the two calls. Note, $period can be
-fractional number also. The exact "$period seconds" is not guarranteed,
+module waits for $period seconds between the two calls. Note, $period can be
+fractional number also. The exact "$period seconds" is not guaranteed,
 signals can shorten and the process scheduler can make it longer (on busy
 systems).
 
