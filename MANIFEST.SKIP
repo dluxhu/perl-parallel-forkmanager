@@ -16,3 +16,4 @@
 ^_build/
 ^MYMETA.*
 ^*.gz$
+^cover_db/
