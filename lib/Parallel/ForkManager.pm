@@ -412,18 +412,20 @@ processes, although I don't think it makes sense.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000-2010 SzabÛ, Bal·zs (dLux)
+=encoding utf8
+
+Copyright (c) 2000-2010 Szab√≥, Bal√°zs (dLux)
 
 All right reserved. This program is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-  dLux (SzabÛ, Bal·zs) <dlux@dlux.hu>
+  dLux (Szab√≥, Bal√°zs) <dlux@dlux.hu>
 
 =head1 CREDITS
 
-  Gabor Szabo (szabgab@cpn.org)  (co-maintainer)
+  G√°bor Szab√≥ (szabgab@cpn.org)  (co-maintainer)
   Michael Gang (bug report)
   Noah Robin <sitz@onastick.net> (documentation tweaks)
   Chuck Hirstius <chirstius@megapathdsl.net> (callback exit status, example)
