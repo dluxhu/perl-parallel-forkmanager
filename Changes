@@ -1,5 +1,10 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+
+1.04
+    - Require File::Path 2.0 to support Perl 5.8 (Ian Burrell)
+    - fix some typos #88358 (David Steinbrunner)
+
 1.03 Wed Mar  6 11:14:13 2013
     - Use second parameter from new() that was unused in the last few released. (Michael Gang)
 

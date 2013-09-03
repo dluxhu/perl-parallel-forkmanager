@@ -12,7 +12,7 @@ WriteMakefile(
            'Storable'       => 0,
            'File::Spec'     => 0,
            'File::Temp'     => 0,
-           'File::Path'     => 0,
+           'File::Path'     => 2.0,
     },
     BUILD_REQUIRES => {
            'Test::More'     => '0.80',
