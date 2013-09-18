@@ -424,7 +424,7 @@ and/or modify it under the same terms as Perl itself.
 
 =head1 CREDITS
 
-  Gábor Szabó (szabgab@cpn.org)  (co-maintainer)
+  Gábor Szabó (szabgab@cpan.org)  (co-maintainer)
   Michael Gang (bug report)
   Noah Robin <sitz@onastick.net> (documentation tweaks)
   Chuck Hirstius <chirstius@megapathdsl.net> (callback exit status, example)
