@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.05 Wed Sep 18 10:53:33 2013
+    - Remove temporary directory only if it was an automatically
+      generated one. (reported by Manuel Jeckelmann)
 
 1.04 Tue Sep  3 09:46:28 2013
     - Require File::Path 2.0 to support Perl 5.8 (Ian Burrell)
@@ -71,4 +74,5 @@ Revision history for Perl extension Parallel::ForkManager.
 
 0.5  Wed Oct 18 16:24:59 2000
 	- original version; created by h2xs 1.19
+
 

@@ -453,6 +453,7 @@ sub new {
     processes  => {},
     in_child   => 0,
     parent_pid => $$,
+    auto_cleanup => ($tempdir ? 1 : 0),
   };
 
 
@@ -659,7 +660,7 @@ sub _NT_waitpid {
 sub DESTROY {
   my ($self) = @_;
 
-  if ($self->{parent_pid} == $$ && -d $self->{tempdir}) {
+  if ($self->{auto_cleanup} && $self->{parent_pid} == $$ && -d $self->{tempdir}) {
     File::Path::remove_tree($self->{tempdir});
   }
 }
