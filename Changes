@@ -1,6 +1,6 @@
 Revision history for Perl extension Parallel::ForkManager.
 
-1.06
+1.06 Tue Dec 24 22:37:54 2013
     - Remove temporary directory only if it was an automatically
       generated one. Now fixed. (Shoichi Kaji) RT #89590
       (johantheolive)
