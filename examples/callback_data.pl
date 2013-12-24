@@ -7,7 +7,7 @@ use Parallel::ForkManager;
 my $max_procs = 2;
 my @names = qw( Fred Jim );
 
-my $pm = Parallel::ForkManager->new($max_procs);
+my $pm = Parallel::ForkManager->new($max_procs, @ARGV);
 
 # Setup a callback for when a child finishes up so we can
 # get it's exit code and any data it collected
