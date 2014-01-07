@@ -6,11 +6,12 @@ Parallel::ForkManager - A simple parallel processing fork manager
 
   use Parallel::ForkManager;
 
-  $pm = Parallel::ForkManager->new($MAX_PROCESSES);
+  my $pm = Parallel::ForkManager->new($MAX_PROCESSES);
 
-  foreach $data (@all_data) {
+  DATA_LOOP:
+  foreach my $data (@all_data) {
     # Forks and returns the pid for the child:
-    my $pid = $pm->start and next;
+    my $pid = $pm->start and next DATA_LOOP;
 
     ... do some work with $data in the child process ...
 
@@ -30,7 +31,7 @@ The code for a downloader would look something like this:
 
   ...
 
-  @links=(
+  my @links=(
     ["http://www.foo.bar/rulez.data","rulez_data.txt"],
     ["http://new.host/more_data.doc","more_data.doc"],
     ...
@@ -41,12 +42,13 @@ The code for a downloader would look something like this:
   # Max 30 processes for parallel download
   my $pm = Parallel::ForkManager->new(30);
 
+  LINKS:
   foreach my $linkarray (@links) {
-    $pm->start and next; # do the fork
+    $pm->start and next LINKS; # do the fork
 
-    my ($link,$fn) = @$linkarray;
+    my ($link, $fn) = @$linkarray;
     warn "Cannot get $fn from $link"
-      if getstore($link,$fn) != RC_OK;
+      if getstore($link, $fn) != RC_OK;
 
     $pm->finish; # do the exit in the child process
   }
@@ -209,16 +211,19 @@ This small example can be used to get URLs in parallel.
 
   use Parallel::ForkManager;
   use LWP::Simple;
-  my $pm= Parallel::ForkManager->new(10);
+
+  my $pm = Parallel::ForkManager->new(10);
+
+  LINKS:
   for my $link (@ARGV) {
-    $pm->start and next;
-    my ($fn)= $link =~ /^.*\/(.*?)$/;
+    $pm->start and next LINKS;
+    my ($fn) = $link =~ /^.*\/(.*?)$/;
     if (!$fn) {
       warn "Cannot determine filename from $fn\n";
     } else {
-      $0.=" ".$fn;
+      $0 .= " " . $fn;
       print "Getting $fn from $link\n";
-      my $rc=getstore($link,$fn);
+      my $rc = getstore($link, $fn);
       print "$link downloaded. response code: $rc\n";
     };
     $pm->finish;
@@ -246,7 +251,7 @@ Example of a program using callbacks to get child exit codes:
   });
 
   $pm->run_on_start( sub {
-      my ($pid,$ident)=@_;
+      my ($pid, $ident)=@_;
       print "** $ident started, pid: $pid\n";
   });
 
@@ -256,8 +261,9 @@ Example of a program using callbacks to get child exit codes:
     0.5
   );
 
+  NAMES:
   foreach my $child ( 0 .. $#names ) {
-    my $pid = $pm->start($names[$child]) and next;
+    my $pid = $pm->start($names[$child]) and next NAMES;
 
     # This code is the child process
     print "This is $names[$child], Child number $child\n";
@@ -289,7 +295,8 @@ In this simple example, each child sends back a string reference.
       if (defined($data_structure_reference)) {  # children are not forced to send anything
         my $string = ${$data_structure_reference};  # child passed a string reference
         print "$string\n";
-      } else {  # problems occuring during storage or retrieval will throw a warning
+      }
+      else {  # problems occuring during storage or retrieval will throw a warning
         print qq|No message received from child process $pid!\n|;
       }
     }
@@ -300,9 +307,9 @@ In this simple example, each child sends back a string reference.
   my @preferences = ('loves', q|can't stand|, 'always wants more', 'will walk 100 miles for', 'only eats', 'would starve rather than eat');
 
   # run the parallel processes
-  my $person = '';
-  foreach $person (qw(Fred Wilma Ernie Bert Lucy Ethel Curly Moe Larry)) {
-    $pm->start() and next;
+  PERSONS:
+  foreach my $person (qw(Fred Wilma Ernie Bert Lucy Ethel Curly Moe Larry)) {
+    $pm->start() and next PERSONS;
 
     # generate a random statement about food preferences
     my $statement = $person . ' ' . $preferences[int(rand @preferences)] . ' ' . $foods[int(rand @foods)];
@@ -356,9 +363,9 @@ process whatever is retrieved.
     {'name' => 'ENV values in an array', 'send' => 'values'},
   );
 
-  my $instruction = '';
-  foreach $instruction (@instructions) {
-    $pm->start($instruction->{'name'}) and next;  # this time we are using an explicit, unique child process identifier
+  INSTRUCTS:
+  foreach my $instruction (@instructions) {
+    $pm->start($instruction->{'name'}) and next INSTRUCTS;  # this time we are using an explicit, unique child process identifier
 
     # last step in child processing
     $pm->finish(0) unless $instruction->{'send'};  # no data structure is sent unless this child is told what to send.
