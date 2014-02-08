@@ -17,7 +17,7 @@ WriteMakefile(
            'File::Path'     => 2.0,
     },
     BUILD_REQUIRES => {
-           'Test::More'     => '0.80',
+           'Test::More'     => '1.001',
     },
     META_MERGE        => {
        resources => {
