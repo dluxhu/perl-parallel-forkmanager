@@ -121,6 +121,27 @@ Allows you to set a new maximum number of children to maintain.
 You can call this method to wait for all the processes which have been
 forked. This is a blocking wait.
 
+=item max_procs 
+
+Returns the maximal number of processes the object will fork.
+
+=item running_procs
+
+Returns the pids of the forked processes currently monitored by the
+C<Parallel::ForkManager>. Note that children are still reported as running
+until the fork manager harvest them, via the next call to
+C<start> or C<wait_all_children>.
+
+    my @pids = $pm->running_procs;
+
+    my $nbr_children =- $pm->running_procs;
+
+=item wait_for_available_procs( $n )
+
+Wait until C<$n> available process slots are available.
+If C<$n> is not given, defaults to I<1>.
+
+
 =back
 
 =head1 CALLBACKS
@@ -447,6 +468,8 @@ use Storable qw(store retrieve);
 use File::Spec;
 use File::Temp ();
 use File::Path ();
+use Carp;
+
 use strict;
 use vars qw($VERSION);
 $VERSION="1.07";
@@ -579,6 +602,25 @@ sub wait_all_children {
 }
 
 *wait_all_childs=*wait_all_children; # compatibility;
+
+sub max_procs { $_[0]->{max_proc}; }
+
+sub running_procs {
+    my $self = shift;
+
+    my @pids = keys %{ $self->{processes} };
+    return @pids;
+}
+
+sub wait_for_available_procs {
+    my( $self, $nbr ) = @_;
+    $nbr ||= 1;
+
+    croak "nbr processes '$nbr' higher than the max nbr of processes (@{[ $self->max_procs ]})"
+        if $nbr > $self->max_procs;
+
+    $self->wait_one_child until $self->max_procs - $self->running_procs >= $nbr;
+}
 
 sub run_on_finish {
   my ($s,$code,$pid)=@_;
