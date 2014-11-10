@@ -1,5 +1,7 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.07 2014.11.10
+
     - Increase minimal Test::Simple requirement RT #92801
     - Implement better style and practices in the examples in the POD.
       (Shlomi Fish)
