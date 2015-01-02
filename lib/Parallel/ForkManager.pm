@@ -116,6 +116,10 @@ passed to the parent process. See RETRIEVING DATASTRUCTURES for more info.
 
 Allows you to set a new maximum number of children to maintain.
 
+=item get_max_procs
+
+Return the currently configured maximum number of children.
+
 =item wait_all_children
 
 You can call this method to wait for all the processes which have been
@@ -628,6 +632,11 @@ sub set_max_procs {
   my ($s, $mp)=@_;
 
   $s->{max_proc} = $mp;
+}
+
+sub get_max_procs {
+  my ($s)=@_;
+  return $s->{max_proc};
 }
 
 # OS dependant code follows...
