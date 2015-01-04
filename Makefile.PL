@@ -20,8 +20,14 @@ WriteMakefile(
            'Test::More'     => '1.001',
     },
     META_MERGE        => {
-       resources => {
-           repository  =>  'http://code.google.com/p/perl-parallel-forkmanager/',
+		'meta-spec' => { version => 2 },
+		resources => {
+			repository => {
+				type       => 'git',
+				url        => 'https://github.com/dluxhu/perl-parallel-forkmanager.git',
+				web        => 'https://github.com/dluxhu/perl-parallel-forkmanager',
+				license    => 'http://dev.perl.org/licenses/',
+			},
        },
        x_contributors => [
            'SZABGAB',
