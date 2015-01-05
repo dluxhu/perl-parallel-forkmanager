@@ -672,38 +672,39 @@ sub set_max_procs {
   $s->{max_proc} = $mp;
 }
 
-# OS dependant code follows...
-
 sub _waitpid { # Call waitpid() in the standard Unix fashion.
-  return waitpid($_[1],$_[2]);
+    my( $self, $pid, $flag ) = @_;
+
+    return $flag ? $self->_waitpid_non_blocking : $self->_waitpid_blocking;
 }
 
-# On ActiveState Perl 5.6/Win32 build 625, waitpid(-1, &WNOHANG) always
-# blocks unless an actual PID other than -1 is given.
-sub _NT_waitpid {
-  my ($s, $pid, $par) = @_;
+sub _waitpid_non_blocking {
+    my $self = shift;
 
-  if ($par == &WNOHANG) { # Need to nonblock on each of our PIDs in the pool.
-    my @pids = keys %{ $s->{processes} };
-    # Simulate -1 (no processes awaiting cleanup.)
-    return -1 unless scalar(@pids);
-    # Check each PID in the pool.
-    my $kid;
-    foreach $pid (@pids) {
-      $kid = waitpid($pid, $par);
-      return $kid if $kid != 0; # AS 5.6/Win32 returns negative PIDs.
+    for my $pid ( $self->running_procs ) {
+        my $p = waitpid $pid, &WNOHANG or next;
+        if ( $p == -1 ) {
+            warn "child process '$pid' disappeared. A call to `waitpid` outside of Parallel::ForkManager might have reaped it.\n";
+            # it's gone. let's clean the process entry
+            delete $self->{processes}{$pid};
+        }
+        else {
+            return $pid;
+        }
     }
-    return $kid;
-  } else { # Normal waitpid() call.
-    return waitpid($pid, $par);
-  }
+
+    return 0;
 }
 
-{
-  local $^W = 0;
-  if ($^O eq 'NT' or $^O eq 'MSWin32') {
-    *_waitpid = \&_NT_waitpid;
-  }
+sub _waitpid_blocking {
+    my $self = shift;
+
+    while() {
+        my $pid = $self->_waitpid_non_blocking;
+        return $pid if $pid;
+
+        sleep 1;
+    }
 }
 
 sub DESTROY {
