@@ -1,0 +1,16 @@
+Changes
+examples/callback.pl
+examples/callback_data.pl
+examples/parallel_get.pl
+lib/Parallel/ForkManager.pm
+Makefile.PL
+MANIFEST			This list of files
+README
+t/00-load.t
+t/01-utf8-all.t
+t/02-callback.t
+t/03-callback-data.t
+t/basic-methods.t
+t/callback.txt
+t/callback_data.txt
+t/waitpid-conflict.t

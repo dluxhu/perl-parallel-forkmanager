@@ -1,5 +1,12 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.08 2015.01.07
+
+    - New helper functions 'max_procs', 'running_procs' and
+        'wait_for_available_procs'. GH#4 (Yanick Champoux)
+    - Play nicer with calls to 'waitpid' done outside of P::FM.
+        GH#3 (Yanick Champoux)
+
 1.07 2014.11.10
 
     - Increase minimal Test::Simple requirement RT #92801

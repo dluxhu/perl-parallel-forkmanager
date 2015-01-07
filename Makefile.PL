@@ -31,6 +31,7 @@ WriteMakefile(
        },
        x_contributors => [
            'SZABGAB',
+           'YANICK',
            'Michael Gang',
            'Noah Robin <sitz@onastick.net>',
            'Chuck Hirstius <chirstius@megapathdsl.net>',
