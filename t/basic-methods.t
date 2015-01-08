@@ -22,7 +22,8 @@ is $nbr => 3, '3 children';
 
 is scalar(@pids) => 3, '3 children';
 
-like $_ => qr/^\d+$/, "looks like a pid" for @pids;
+# on Windows they'll be negative
+like $_ => qr/^-?\d+$/, "looks like a pid" for @pids;
 
 $pm->wait_for_available_procs(3);
 

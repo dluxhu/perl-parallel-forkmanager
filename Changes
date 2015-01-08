@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.09 2015.01.08
+    - Test was failing on Windows platforms. (Yanick Champoux)
+
 1.08 2015.01.07
 
     - New helper functions 'max_procs', 'running_procs' and
