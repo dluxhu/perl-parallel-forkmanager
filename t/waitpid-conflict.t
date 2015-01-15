@@ -11,17 +11,17 @@ local $SIG{ALRM} = sub {
     fail "test hanging, forever waiting for child process";
     exit;
 };
-alarm 4;
+alarm 10;
 
 for ( 1..4 ) {
     $pm->start and next;
-    sleep 1;
+    sleep 2;
     $pm->finish;
 }
 
 my $pid = waitpid -1, 0;
 
-warn "code outside of P::FM stole $pid";
+diag "code outside of P::FM stole $pid";
 
 $pm->wait_all_children;
 
