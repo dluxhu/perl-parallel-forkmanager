@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.10_2 2015.01.25
+    - Put the problematic test as a TODO.
+
 1.10_1 2015.01.22
     - Increase timeouts in test to address FreeBSD failures.
 

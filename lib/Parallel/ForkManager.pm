@@ -472,7 +472,7 @@ use Carp;
 
 use strict;
 use vars qw($VERSION);
-$VERSION="1.10_1";
+$VERSION="1.10_2";
 $VERSION = eval $VERSION;
 
 sub new {
