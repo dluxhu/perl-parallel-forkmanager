@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.11 2015.01.30
+    - Promote to non-dev release.
+
 1.10_2 2015.01.25
     - Put the problematic test as a TODO.
 
