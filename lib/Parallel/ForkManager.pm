@@ -141,6 +141,21 @@ C<start> or C<wait_all_children>.
 Wait until C<$n> available process slots are available.
 If C<$n> is not given, defaults to I<1>.
 
+=item waitpid_blocking_sleep 
+
+Returns the sleep period, in seconds, of the pseudo-blocking calls.
+Returns C<0> if disabled. 
+
+Defaults to 1 second.
+
+See I<BLOCKING CALLS> for more details.
+
+=item set_waitpid_blocking_sleep $seconds
+
+Sets the the sleep period, in seconds, of the pseudo-blocking calls.
+Set to C<0> to disable.
+
+See I<BLOCKING CALLS> for more details.
 
 =back
 
@@ -190,6 +205,64 @@ systems).
 The $code called in the "start" and the "wait_all_children" method also.
 
 No parameters are passed to the $code on the call.
+
+=back
+
+=head1 BLOCKING CALLS
+
+When it comes to waiting for child processes to terminate, C<Parallel::ForkManager> is between 
+a fork and a hard place (if you excuse the terrible pun). The underlying Perl C<waitpid> function
+that the module relies on can block until either one specific or any child process 
+terminate, but not for a process part of a given group.
+
+This means that the module can do one of two things when it waits for 
+one of its child processes to terminate:
+
+=over
+
+=item Only wait for its own child processes
+
+This is done via a loop using a C<waitpid> non-blocking call and a sleep statement.
+The code does something along the lines of
+
+    while(1) {
+        if ( any of the P::FM child process terminated ) {
+            return its pid
+        }
+
+        sleep $sleep_period
+    }
+
+This is the default behavior that the module will use.
+This is not the most efficient way to wait for child processes, but it's
+the safest way to ensure that C<Parallel::ForkManager> won't interfere with 
+any other part of the codebase. 
+
+The sleep period is set via the method C<set_waitpid_blocking_sleep>.
+
+=item Block until any process terminate
+
+Alternatively, C<Parallel::ForkManager> can call C<waitpid> such that it will
+block until any child process terminate. If the child process was not one of
+the monitored subprocesses, the wait will resume. This is more efficient, but mean
+that C<P::FM> can captures (and discards) the termination notification that a different
+part of the code might be waiting for. 
+
+If this is a race condition
+that doesn't apply to your codebase, you can set the 
+I<waitpid_blocking_sleep> period to C<0>, which will enable C<waitpid> call blocking.
+
+    my $pm = Parallel::ForkManager->new( 4 );
+
+    $pm->set_waitpid_blocking_sleep(0);  # true blocking calls enabled
+
+    for ( 1..100 ) {
+        $pm->start and next;
+
+        ...; # do work
+
+        $pm->finish;
+    }
 
 =back
 
@@ -484,6 +557,7 @@ sub new {
     in_child   => 0,
     parent_pid => $$,
     auto_cleanup => ($tempdir ? 0 : 1),
+    waitpid_blocking_sleep => 1,
   };
 
 
@@ -672,6 +746,15 @@ sub set_max_procs {
   $s->{max_proc} = $mp;
 }
 
+sub set_waitpid_blocking_sleep {
+    my( $self, $period ) = @_;
+    $self->{waitpid_blocking_sleep} = $period;
+}
+
+sub waitpid_blocking_sleep {
+    $_[0]->{waitpid_blocking_sleep};
+}
+
 sub _waitpid { # Call waitpid() in the standard Unix fashion.
     my( $self, $pid, $flag ) = @_;
 
@@ -699,12 +782,17 @@ sub _waitpid_non_blocking {
 sub _waitpid_blocking {
     my $self = shift;
 
-    while() {
-        my $pid = $self->_waitpid_non_blocking;
-        return $pid if $pid;
+    # pseudo-blocking
+    if( my $sleep_period = $self->{waitpid_blocking_sleep} ) {
+        while() {
+            my $pid = $self->_waitpid_non_blocking;
+            return $pid if $pid;
 
-        sleep 1;
+            sleep $sleep_period;
+        }
     }
+
+    return waitpid -1, 0;
 }
 
 sub DESTROY {

@@ -1,29 +1,33 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 use Parallel::ForkManager;
 use File::Temp qw(tempdir);
 
-ok(1, 'loaded');
-
-
 my @numbers = (1 .. 20);
 
-is_deeply count(1), \@numbers, 'count 1';
-is_deeply count(3), \@numbers, 'count 3';
-
+for my $processes ( 1, 3 ) {
+    for my $pseudo_block ( 0, 1 ) {
+        my $chrono = time;
+        is_deeply count($processes,$pseudo_block) => \@numbers,
+            "procs: $processes, pseudo-block: $pseudo_block";
+        $chrono = time - $chrono;
+        diag "time: $chrono seconds";
+    };
+}
 
 
 sub count {
-    my ($concurrency) = @_;
+    my ($concurrency,$blocking_time) = @_;
 
     my $dir = tempdir(CLEANUP => 1);
 
     my $fork = Parallel::ForkManager->new( $concurrency );
+    $fork->set_waitpid_blocking_sleep( $blocking_time );
+
     foreach my $n (@numbers) {
 	    my $pid = $fork->start and next;
-        #diag $n;
         open my $fh, '>', "$dir/$n" or die;
         close $fh or die;
 	    $fork->finish;
