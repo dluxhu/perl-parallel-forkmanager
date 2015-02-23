@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.12 2015.02.23
+    - Allow to use true blocking calls. (RT#102305)
+
 1.11 2015.01.30
     - Promote to non-dev release.
 
