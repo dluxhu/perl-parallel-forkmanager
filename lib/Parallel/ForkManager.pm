@@ -143,7 +143,9 @@ If C<$n> is not given, defaults to I<1>.
 
 =item waitpid_blocking_sleep 
 
-Returns the sleep period, in seconds, of the pseudo-blocking calls.
+Returns the sleep period, in seconds, of the pseudo-blocking calls. The sleep
+period can be a fraction of second. 
+
 Returns C<0> if disabled. 
 
 Defaults to 1 second.
@@ -545,7 +547,7 @@ use Carp;
 
 use strict;
 use vars qw($VERSION);
-$VERSION="1.12";
+$VERSION="1.13";
 $VERSION = eval $VERSION;
 
 sub new {
@@ -788,7 +790,7 @@ sub _waitpid_blocking {
             my $pid = $self->_waitpid_non_blocking;
             return $pid if $pid;
 
-            sleep $sleep_period;
+            select undef, undef, undef, $sleep_period;
         }
     }
 

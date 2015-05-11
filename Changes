@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+1.13 2015.05.11
+    - Use 'select' instead of sleep in _waitpid_blocking. (GH#5)
+
 1.12 2015.02.23
     - Allow to use true blocking calls. (RT#102305)
 
