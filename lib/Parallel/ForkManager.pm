@@ -121,6 +121,20 @@ Allows you to set a new maximum number of children to maintain.
 You can call this method to wait for all the processes which have been
 forked. This is a blocking wait.
 
+=item reap_any_children
+
+This is a non-blocking call to reap children and execute callbacks. You can
+use this in scenarios where start() is called infrequently but you would like
+the callbacks executed quickly.
+
+=item is_parent
+
+Returns 1 if within the parent or 0 if within the child.
+
+=item is_child
+
+Returns 1 if within the child or 0 if within the parent.
+
 =item max_procs 
 
 Returns the maximal number of processes the object will fork.
@@ -636,6 +650,7 @@ sub wait_children {
 };
 
 *wait_childs=*wait_children; # compatibility
+*reap_any_children=*wait_children; # behavioral synonym for clarity
 
 sub wait_one_child {
   my ($s,$par)=@_;
@@ -680,6 +695,10 @@ sub wait_all_children {
 *wait_all_childs=*wait_all_children; # compatibility;
 
 sub max_procs { $_[0]->{max_proc}; }
+
+sub is_child  { $_[0]->{in_child} ? 1 : 0; }
+
+sub is_parent { $_[0]->{in_child} ? 0 : 1; }
 
 sub running_procs {
     my $self = shift;
