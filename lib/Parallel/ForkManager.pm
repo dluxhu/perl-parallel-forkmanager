@@ -123,9 +123,9 @@ forked. This is a blocking wait.
 
 =item reap_any_children
 
-This is a non-blocking call to reap children and execute callbacks. You can
-use this in scenarios where start() is called infrequently but you would like
-the callbacks executed quickly.
+This is a non-blocking call to reap children and execute callbacks independent
+of calls to "start" or "wait_all_children". Use this in scenarios where "start"
+is called infrequently but you would like the callbacks executed quickly.
 
 =item is_parent
 
