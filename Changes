@@ -1,6 +1,6 @@
 Revision history for Perl extension Parallel::ForkManager.
 
-{{$NEXT}} 
+1.14 2015.05.17
     - Add 'reap_finished_children', 'is_child' and 'is_parent'. (GH#6, Nine bit)
 
 1.13 2015.05.11
