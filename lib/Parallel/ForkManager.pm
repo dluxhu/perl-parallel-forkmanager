@@ -129,11 +129,11 @@ is called infrequently but you would like the callbacks executed quickly.
 
 =item is_parent
 
-Returns 1 if within the parent or 0 if within the child.
+Returns C<true> if within the parent or C<false> if within the child.
 
 =item is_child
 
-Returns 1 if within the child or 0 if within the parent.
+Returns C<true> if within the child or C<false> if within the parent.
 
 =item max_procs 
 
@@ -696,9 +696,9 @@ sub wait_all_children {
 
 sub max_procs { $_[0]->{max_proc}; }
 
-sub is_child  { $_[0]->{in_child} ? 1 : 0; }
+sub is_child  { $_[0]->{in_child} }
 
-sub is_parent { $_[0]->{in_child} ? 0 : 1; }
+sub is_parent { !$_[0]->{in_child} }
 
 sub running_procs {
     my $self = shift;
