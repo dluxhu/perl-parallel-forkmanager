@@ -121,7 +121,7 @@ Allows you to set a new maximum number of children to maintain.
 You can call this method to wait for all the processes which have been
 forked. This is a blocking wait.
 
-=item reap_any_children
+=item reap_finished_children
 
 This is a non-blocking call to reap children and execute callbacks independent
 of calls to "start" or "wait_all_children". Use this in scenarios where "start"
@@ -650,7 +650,7 @@ sub wait_children {
 };
 
 *wait_childs=*wait_children; # compatibility
-*reap_any_children=*wait_children; # behavioral synonym for clarity
+*reap_finished_children=*wait_children; # behavioral synonym for clarity
 
 sub wait_one_child {
   my ($s,$par)=@_;
