@@ -787,17 +787,15 @@ sub _waitpid_non_blocking {
 
     for my $pid ( $self->running_procs ) {
         my $p = waitpid $pid, &WNOHANG or next;
-        if ( $p == -1 ) {
-            warn "child process '$pid' disappeared. A call to `waitpid` outside of Parallel::ForkManager might have reaped it.\n";
-            # it's gone. let's clean the process entry
-            delete $self->{processes}{$pid};
-        }
-        else {
-            return $pid;
-        }
+
+        return $pid if $p != -1;
+
+        warn "child process '$pid' disappeared. A call to `waitpid` outside of Parallel::ForkManager might have reaped it.\n";
+        # it's gone. let's clean the process entry
+        delete $self->{processes}{$pid};
     }
 
-    return 0;
+    return -1;
 }
 
 sub _waitpid_blocking {

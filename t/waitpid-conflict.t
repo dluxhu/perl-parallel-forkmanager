@@ -12,7 +12,7 @@ local $SIG{ALRM} = sub {
     exit 1;
 };
 
-for ( 1..4 ) {
+for ( 1 ) {
     $pm->start and next;
     sleep 2;
     $pm->finish;
