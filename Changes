@@ -1,6 +1,6 @@
 Revision history for Perl extension Parallel::ForkManager.
 
-NEXT
+1.15 2015.07.08 
     - test's watchdog actually exit if it's being hit. (RT#105747, Zefram)
     - condition to catch children reaped by external forces
         improved. (RT#105748, Zefram + Yanick)

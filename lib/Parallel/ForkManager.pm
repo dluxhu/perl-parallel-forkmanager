@@ -561,7 +561,7 @@ use Carp;
 
 use strict;
 use vars qw($VERSION);
-$VERSION="1.14";
+$VERSION="1.15";
 $VERSION = eval $VERSION;
 
 sub new {
