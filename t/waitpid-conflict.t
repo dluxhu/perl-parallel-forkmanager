@@ -9,6 +9,7 @@ my $pm = Parallel::ForkManager->new(4);
 
 local $SIG{ALRM} = sub {
     fail "test hanging, forever waiting for child process";
+    exit 1;
 };
 
 for ( 1..4 ) {

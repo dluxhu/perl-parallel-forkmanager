@@ -1,5 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
+NEXT
+    - test's watchdog actually exit if it's being hit. (RT#105747, Zefram)
+
 1.14 2015.05.17
     - Add 'reap_finished_children', 'is_child' and 'is_parent'. (GH#6, Nine bit)
 
