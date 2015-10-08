@@ -646,7 +646,7 @@ sub wait_children {
   my $kid;
   do {
     $kid = $s->wait_one_child(&WNOHANG);
-  } while $kid > 0 || $kid < -1; # AS 5.6/Win32 returns negative PIDs
+  } while defined $kid and ( $kid > 0 or $kid < -1 ); # AS 5.6/Win32 returns negative PIDs
 };
 
 *wait_childs=*wait_children; # compatibility
@@ -658,6 +658,9 @@ sub wait_one_child {
   my $kid;
   while (1) {
     $kid = $s->_waitpid(-1,$par||=0);
+
+    last unless defined $kid;
+
     last if $kid == 0 || $kid == -1; # AS 5.6/Win32 returns negative PIDs
     redo if !exists $s->{processes}->{$kid};
     my $id = delete $s->{processes}->{$kid};
@@ -795,7 +798,7 @@ sub _waitpid_non_blocking {
         delete $self->{processes}{$pid};
     }
 
-    return -1;
+    return;
 }
 
 sub _waitpid_blocking {
@@ -805,7 +808,10 @@ sub _waitpid_blocking {
     if( my $sleep_period = $self->{waitpid_blocking_sleep} ) {
         while() {
             my $pid = $self->_waitpid_non_blocking;
-            return $pid if $pid;
+
+            return $pid if defined $pid;
+
+            return unless $self->running_procs;
 
             select undef, undef, undef, $sleep_period;
         }
