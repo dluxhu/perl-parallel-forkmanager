@@ -1,8 +1,0 @@
-.build
-/MYMETA.json
-/MYMETA.yml
-/Makefile
-/README
-/blib/
-/pm_to_blib
-/Parallel-ForkManager-*
