@@ -1,3 +1,4 @@
+dist.ini
 ^.travis.yml
 ^.git
 ^.cvsignore

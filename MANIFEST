@@ -1,12 +1,22 @@
+CONTRIBUTORS
 Changes
+INSTALL
+MANIFEST
+META.json
+META.yml
+Makefile.PL
+README.mkdn
+SIGNATURE
+cpanfile
+doap.xml
 examples/callback.pl
 examples/callback_data.pl
 examples/parallel_get.pl
 lib/Parallel/ForkManager.pm
-Makefile.PL
-MANIFEST			This list of files
-README
+t/00-compile.t
 t/00-load.t
+t/00-report-prereqs.dd
+t/00-report-prereqs.t
 t/01-utf8-all.t
 t/02-callback.t
 t/03-callback-data.t
@@ -14,3 +24,6 @@ t/basic-methods.t
 t/callback.txt
 t/callback_data.txt
 t/waitpid-conflict.t
+t/waitpid-waitonechild.t
+t/waitpid_blocking.t
+xt/release/unused-vars.t
