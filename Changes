@@ -1,123 +1,137 @@
 Revision history for Perl extension Parallel::ForkManager.
 
 {{$NEXT}}
-    - wait_one_child wasn't waiting at all. (RT#107634, Slaven Rezic, Yanick)
+  [ API CHANGES ]
 
-1.15 2015-07-08 
-    - test's watchdog actually exit if it's being hit. (RT#105747, Zefram)
-    - condition to catch children reaped by external forces
-        improved. (RT#105748, Zefram + Yanick)
+  [ BUG FIXES ]
+
+  [ DOCUMENTATION ]
+
+  [ ENHANCEMENTS ]
+
+  [ NEW FEATURES ]
+
+  [ STATISTICS ]
+
+1.16 2015-10-08
+  - wait_one_child wasn't waiting at all. (RT#107634, Slaven Rezic, Yanick)
+
+  [ STATISTICS ]
+    - code churn: 10 files changed, 517 insertions(+), 461 deletions(-)
+
+1.15 2015-07-08
+  - test's watchdog actually exit if it's being hit. (RT#105747, Zefram)
+  - condition to catch children reaped by external forces improved.
+    (RT#105748, Zefram + Yanick)
 
 1.14 2015-05-17
-    - Add 'reap_finished_children', 'is_child' and 'is_parent'. (GH#6, Nine bit)
+  - Add 'reap_finished_children', 'is_child' and 'is_parent'. (GH#6, Nine
+    bit)
 
 1.13 2015-05-11
-    - Use 'select' instead of sleep in _waitpid_blocking. (GH#5)
+  - Use 'select' instead of sleep in _waitpid_blocking. (GH#5)
 
 1.12 2015-02-23
-    - Allow to use true blocking calls. (RT#102305)
+  - Allow to use true blocking calls. (RT#102305)
 
 1.11 2015-01-30
-    - Promote to non-dev release.
+  - Promote to non-dev release.
 
 1.10_2 2015-01-25
-    - Put the problematic test as a TODO.
+  - Put the problematic test as a TODO.
 
 1.10_1 2015-01-22
-    - Increase timeouts in test to address FreeBSD failures.
+  - Increase timeouts in test to address FreeBSD failures.
 
 1.09 2015-01-08
-    - Test was failing on Windows platforms. (Yanick Champoux)
+  - Test was failing on Windows platforms. (Yanick Champoux)
 
 1.08 2015-01-07
-
-    - New helper functions 'max_procs', 'running_procs' and
-        'wait_for_available_procs'. GH#4 (Yanick Champoux)
-    - Play nicer with calls to 'waitpid' done outside of P::FM.
-        GH#3 (Yanick Champoux)
+  - New helper functions 'max_procs', 'running_procs' and
+    'wait_for_available_procs'. GH#4 (Yanick Champoux)
+  - Play nicer with calls to 'waitpid' done outside of P::FM. GH#3 (Yanick
+    Champoux)
 
 1.07 2014-11-10
-
-    - Increase minimal Test::Simple requirement RT #92801
-    - Implement better style and practices in the examples in the POD.
-      (Shlomi Fish)
+  - Increase minimal Test::Simple requirement RT #92801
+  - Implement better style and practices in the examples in the POD.
+    (Shlomi Fish)
 
 1.06 2013-12-24
-    - Remove temporary directory only if it was an automatically
-      generated one. Now fixed. (Shoichi Kaji) RT #89590
-      (johantheolive)
+  - Remove temporary directory only if it was an automatically generated
+    one. Now fixed. (Shoichi Kaji) RT #89590 (johantheolive)
 
 1.05 2013-09-18
-    - Remove temporary directory only if it was an automatically
-      generated one. (reported by Manuel Jeckelmann)
+  - Remove temporary directory only if it was an automatically generated
+    one. (reported by Manuel Jeckelmann)
 
 1.04 2013-09-03
-    - Require File::Path 2.0 to support Perl 5.8 (Ian Burrell)
-    - fix some typos #88358 (David Steinbrunner)
-    - documentation fixes #84337 (Damyan Ivanov)
+  - Require File::Path 2.0 to support Perl 5.8 (Ian Burrell)
+  - fix some typos #88358 (David Steinbrunner)
+  - documentation fixes #84337 (Damyan Ivanov)
 
 1.03 2013-03-06
-    - Use second parameter from new() that was unused in the last few released. (Michael Gang)
+  - Use second parameter from new() that was unused in the last few
+    released. (Michael Gang)
 
 1.02 2012-12-24
-    - Fix test for Windows.
+  - Fix test for Windows.
 
 1.01 2012-12-23
-    - Disable utf8 test on Windows where it is a perl bug.
-    - Change version number scheme to two parts.
+  - Disable utf8 test on Windows where it is a perl bug.
+  - Change version number scheme to two parts.
 
 1.0.0 2012-12-23
-    - Fixing RT 68298 - Insecure /tmp file handling using
-        File::Temp::tempdir by John Lightsey (LIGHTSEY)
-    - Adding another callback example and several tests
-        Gabor Szabo (SZABGAB)
+  - Fixing RT 68298 - Insecure /tmp file handling using File::Temp::tempdir
+    by John Lightsey (LIGHTSEY)
+  - Adding another callback example and several tests Gabor Szabo (SZABGAB)
+
+0.7 2001-04-04
+  - callback code tested, exit status return (Chuck, dLux)
+  - added parallel_get.pl, a parallel webget example (dLux)
+  - added callbacks.pl, a callback example (Chuck, dLux)
+  - documentation updtes (Chuck, dLux)
+
+0.6 2000-11-30
+  - documentation tweak fixes by Noah Robin
+  - warning elimination fixes
+
+0.5 2000-10-18
+  - original version; created by h2xs 1.19
 
 0.7.9 2010-11-01
-        - Exclude the example scripts from getting installed.
-	  (https://rt.cpan.org/Public/Bug/Display.html?id=62506)
+  - Exclude the example scripts from getting installed.
+    (https://rt.cpan.org/Public/Bug/Display.html?id=62506)
 
 0.7.8 2010-08-25
-	- Make $VERSION compatible with the most perl versions possible
-	  (http://rt.cpan.org/Public/Bug/Display.html?id=62180)
+  - Make $VERSION compatible with the most perl versions possible
+    (http://rt.cpan.org/Public/Bug/Display.html?id=62180)
 
 0.7.7 2010-09-28
-	- Small distribution fixes
+  - Small distribution fixes
 
 0.7.6 2010-08-15
-	- Added datastructure retrieval (Ken Clarke)
-	- Using CORE::exit instead of exit
-	  (http://rt.cpan.org/Public/Bug/Display.html?id=39003)
+  - Added datastructure retrieval (Ken Clarke)
+  - Using CORE::exit instead of exit
+    (http://rt.cpan.org/Public/Bug/Display.html?id=39003)
 
 0.7.5 2002-12-25
-	- Documentation fixes
-	- Fix bug if you specify max_procs = 0
+  - Documentation fixes
+  - Fix bug if you specify max_procs = 0
 
 0.7.4 2002-07-04
-	- on_wait callback now runs from the wait_all_children method
-	- run_on_wait can run a task periodically, not only once.
+  - on_wait callback now runs from the wait_all_children method
+  - run_on_wait can run a task periodically, not only once.
 
 0.7.3 2001-08-24
-	- minor bugfix on calling the "on_finish" callback
+  - minor bugfix on calling the "on_finish" callback
 
 0.7.2 2001-05-14
-	- win32 port
-	- fix for the broken wait_one_child
+  - win32 port
+  - fix for the broken wait_one_child
 
 0.7.1 2001-04-26
-	- various semantical and grammar fixes in the documentation
-	- on_finish now get the exit signal also
-	- on_start now get the process-identification also
-	- described limitations in the doc
-
-0.7  2001-04-04
-	- callback code tested, exit status return (Chuck, dLux)
-	- added parallel_get.pl, a parallel webget example (dLux)
-	- added callbacks.pl, a callback example (Chuck, dLux)
-	- documentation updtes (Chuck, dLux)
-
-0.6  2000-11-30
-	- documentation tweak fixes by Noah Robin
-	- warning elimination fixes
-
-0.5  2000-10-18
-	- original version; created by h2xs 1.19
+  - various semantical and grammar fixes in the documentation
+  - on_finish now get the exit signal also
+  - on_start now get the process-identification also
+  - described limitations in the doc
