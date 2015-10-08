@@ -802,22 +802,8 @@ use the second object in the main program.
 You are free to use a new copy of Parallel::ForkManager in the child
 processes, although I don't think it makes sense.
 
-=head1 COPYRIGHT
-
-=encoding utf8
-
-Copyright (c) 2000-2010 Szabó, Balázs (dLux)
-
-All right reserved. This program is free software; you can redistribute it
-and/or modify it under the same terms as Perl itself.
-
-=head1 AUTHOR
-
-  dLux (Szabó, Balázs) <dlux@dlux.hu>
-
 =head1 CREDITS
 
-  Gábor Szabó (szabgab@cpan.org)  (co-maintainer)
   Michael Gang (bug report)
   Noah Robin <sitz@onastick.net> (documentation tweaks)
   Chuck Hirstius <chirstius@megapathdsl.net> (callback exit status, example)
