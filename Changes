@@ -1,6 +1,7 @@
 Revision history for Perl extension Parallel::ForkManager.
 
 {{$NEXT}}
+    - wait_one_child wasn't waiting at all. (RT#107634, Slaven Rezic, Yanick)
 
 1.15 2015-07-08 
     - test's watchdog actually exit if it's being hit. (RT#105747, Zefram)
