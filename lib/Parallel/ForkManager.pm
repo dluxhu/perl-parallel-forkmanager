@@ -226,7 +226,7 @@ sub waitpid_blocking_sleep {
 }
 
 sub _waitpid { # Call waitpid() in the standard Unix fashion.
-    my( $self, $pid, $flag ) = @_;
+    my( $self, undef, $flag ) = @_;
 
     return $flag ? $self->_waitpid_non_blocking : $self->_waitpid_blocking;
 }
