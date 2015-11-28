@@ -26,4 +26,5 @@ t/callback_data.txt
 t/waitpid-conflict.t
 t/waitpid-waitonechild.t
 t/waitpid_blocking.t
+xt/release/pause-permissions.t
 xt/release/unused-vars.t
