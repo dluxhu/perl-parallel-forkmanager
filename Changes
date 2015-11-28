@@ -1,6 +1,9 @@
 Revision history for Perl extension Parallel::ForkManager.
 
 {{$NEXT}}
+  - Up Test::More's dependency version to v0.94 (because of 'subtest'). 
+        (GH#8, mauke)
+
   [ API CHANGES ]
 
   [ BUG FIXES ]

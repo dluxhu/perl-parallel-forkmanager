@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2;
+use Test::More 0.94 tests => 2;
 use File::Temp qw(tempdir);
 
 diag 'This test can take 2-6 seconds, please wait. Started at ' . localtime;
