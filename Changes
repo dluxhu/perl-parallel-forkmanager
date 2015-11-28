@@ -1,9 +1,6 @@
 Revision history for Perl extension Parallel::ForkManager.
 
 {{$NEXT}}
-  - Up Test::More's dependency version to v0.94 (because of 'subtest'). 
-        (GH#8, mauke)
-
   [ API CHANGES ]
 
   [ BUG FIXES ]
@@ -15,6 +12,13 @@ Revision history for Perl extension Parallel::ForkManager.
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+1.17 2015-11-28
+  - Up Test::More's dependency version to v0.94 (because of 'subtest'). 
+    (GH#8, mauke)
+
+  [ STATISTICS ]
+    - code churn: 3 files changed, 88 insertions(+), 70 deletions(-)
 
 1.16 2015-10-08
   - wait_one_child wasn't waiting at all. (RT#107634, Slaven Rezic, Yanick)
