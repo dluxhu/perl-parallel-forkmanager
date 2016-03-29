@@ -113,7 +113,7 @@ sub wait_one_child {
 
     # retrieve child data structure, if any
     my $retrieved = undef;
-    my $storable_tempfile = File::Spec->catfile($s->{tempdir}, 'Parallel-ForkManager-' . $$ . '-' . $kid . '.txt');
+    my $storable_tempfile = File::Spec->catfile($s->{tempdir}, 'Parallel-ForkManager-' . $s->{parent_pid} . '-' . $kid . '.txt');
     if (-e $storable_tempfile) {  # child has option of not storing anything, so we need to see if it did or not
       $retrieved = eval { return &retrieve($storable_tempfile); };
 
