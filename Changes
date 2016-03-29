@@ -4,6 +4,8 @@ Revision history for Perl extension Parallel::ForkManager.
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - Storage file between child and parent could have the wrong name, 
+    because $$ was used instead of parent_pid. (GH#9, reported by Lucien Coffe)
 
   [ DOCUMENTATION ]
 
