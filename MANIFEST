@@ -23,6 +23,7 @@ t/03-callback-data.t
 t/basic-methods.t
 t/callback.txt
 t/callback_data.txt
+t/changing-pids.t
 t/waitpid-conflict.t
 t/waitpid-waitonechild.t
 t/waitpid_blocking.t
