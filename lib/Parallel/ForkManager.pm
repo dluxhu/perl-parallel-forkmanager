@@ -1,6 +1,7 @@
 package Parallel::ForkManager;
+our $AUTHORITY = 'cpan:DLUX';
 # ABSTRACT:  A simple parallel processing fork manager
-
+$Parallel::ForkManager::VERSION = '1.18';
 use POSIX ":sys_wait_h";
 use Storable qw(store retrieve);
 use File::Spec;
@@ -277,6 +278,18 @@ sub DESTROY {
 1;
 
 __END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Parallel::ForkManager - A simple parallel processing fork manager
+
+=head1 VERSION
+
+version 1.18
 
 =head1 SYNOPSIS
 
@@ -811,5 +824,29 @@ processes, although I don't think it makes sense.
   Mark Southern <mark_southern@merck.com> (bugfix)
   Ken Clarke <www.perlprogrammer.net>  (datastructure retrieval)
 
-=cut
+=head1 AUTHORS
 
+=over 4
+
+=item *
+
+dLux (Szabó, Balázs) <dlux@dlux.hu>
+
+=item *
+
+Yanick Champoux <yanick@cpan.org>
+
+=item *
+
+Gabor Szabo <gabor@szabgab.com>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2000 by Balázs Szabó.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

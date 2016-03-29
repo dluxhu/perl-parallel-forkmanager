@@ -1,19 +1,13 @@
 Revision history for Perl extension Parallel::ForkManager.
 
-{{$NEXT}}
-  [ API CHANGES ]
-
+1.18 2016-03-29
   [ BUG FIXES ]
-  - Storage file between child and parent could have the wrong name, 
-    because $$ was used instead of parent_pid. (GH#9, reported by Lucien Coffe)
-
-  [ DOCUMENTATION ]
-
-  [ ENHANCEMENTS ]
-
-  [ NEW FEATURES ]
+    - Storage file between child and parent could have the wrong name, 
+      because $$ was used instead of parent_pid. (GH#9, reported by Lucien
+      Coffe)
 
   [ STATISTICS ]
+    - code churn: 4 files changed, 37 insertions(+), 4 deletions(-)
 
 1.17 2015-11-28
   - Up Test::More's dependency version to v0.94 (because of 'subtest'). 
