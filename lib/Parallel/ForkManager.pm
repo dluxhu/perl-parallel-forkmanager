@@ -10,6 +10,18 @@ use Carp;
 
 use strict;
 
+sub start_child {
+    my( $self, $sub ) = @_;
+
+    return if $self->start;
+
+    # we're in the child
+    my $result = $sub->();
+
+    $self->finish( 0, $result ? $result : () );
+
+}
+
 sub new {
   my ($c,$processes,$tempdir)=@_;
 
