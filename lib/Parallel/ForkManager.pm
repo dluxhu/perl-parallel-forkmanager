@@ -789,6 +789,16 @@ process whatever is retrieved.
 
 =for example end
 
+=head1 SECURITY
+
+Parallel::ForkManager uses temporary files when 
+a child process returns information to its parent process. The filenames are
+based on the process of the parent and child processes, so they are 
+fairly easy to guess. So if security is a concern in your environment, make sure
+the directory used by Parallel::ForkManager is restricted to the current user
+only (the default behavior is to create a directory,
+via L<File::Temp>'s C<tempdir>, which does that).
+
 =head1 BUGS AND LIMITATIONS
 
 Do not use Parallel::ForkManager in an environment, where other child
