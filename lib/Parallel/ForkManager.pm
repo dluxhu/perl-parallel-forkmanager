@@ -586,7 +586,7 @@ data structure from a method call. That is not what actually occurs. The
 data structure referenced in a given child process is serialized and
 written out to a file by L<Storable>. The file is subsequently read back
 into memory and a new data structure belonging to the parent process is
-created. Please consider the performance penality it can imply, so try to
+created. Please consider the performance penalty it can imply, so try to
 keep the returned structure small.
 
 =head1 EXAMPLES
@@ -682,7 +682,7 @@ In this simple example, each child sends back a string reference.
         my $string = ${$data_structure_reference};  # child passed a string reference
         print "$string\n";
       }
-      else {  # problems occuring during storage or retrieval will throw a warning
+      else {  # problems occurring during storage or retrieval will throw a warning
         print qq|No message received from child process $pid!\n|;
       }
     }
