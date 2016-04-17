@@ -14,6 +14,7 @@ examples/callback.pl
 examples/callback_data.pl
 examples/parallel_get.pl
 lib/Parallel/ForkManager.pm
+lib/Parallel/ForkManager/Child.pm
 t/00-compile.t
 t/00-load.t
 t/00-report-prereqs.dd

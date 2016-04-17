@@ -2,45 +2,76 @@ package Parallel::ForkManager;
 # ABSTRACT:  A simple parallel processing fork manager
 
 use POSIX ":sys_wait_h";
-use Storable qw(store retrieve);
+use Storable ();
 use File::Spec;
 use File::Temp ();
 use File::Path ();
 use Carp;
 
+use Parallel::ForkManager::Child;
+
 use strict;
 
-sub new {
-  my ($c,$processes,$tempdir)=@_;
+use Moo;
 
-  my $h={
-    max_proc   => $processes,
-    processes  => {},
-    in_child   => 0,
-    parent_pid => $$,
-    auto_cleanup => ($tempdir ? 0 : 1),
-    waitpid_blocking_sleep => 1,
-  };
+has max_proc => (
+    is => 'ro',
+    required => 1,
+    writer => 'set_max_procs',
+);
+
+has processes => (
+    is => 'ro',
+    default => sub { {} },
+);
+
+has parent_pid => (
+    is => 'ro',
+    default => sub { $$ },
+);
+
+has auto_cleanup => (
+    is => 'rw',
+    default => sub { 1 },
+);
+
+has waitpid_blocking_sleep => (
+    is =>'ro',
+    writer => 'set_waitpid_blocking_sleep',
+    default => sub { 1 },
+);
+
+has tempdir => (
+    is => 'ro',
+    default => sub {
+        File::Temp::tempdir(CLEANUP => 0);
+    },
+    trigger => sub {
+        my( $self, $dir ) = @_;
+
+        die qq|Temporary directory "$dir" doesn't exist or is not a directory.| 
+            unless -d $dir;
+
+        $self->auto_cleanup(0);
+    },
+);
+
+sub is_child  { 0 }
+sub is_parent { 1 }
 
 
-  # determine temporary directory for storing data structures
-  # add it to Parallel::ForkManager object so children can use it
-  # We don't let it clean up so it won't do it in the child process
-  # but we have our own DESTROY to do that.
-  if (not defined($tempdir) or not length($tempdir)) {
-    $tempdir = File::Temp::tempdir(CLEANUP => 0);
-  }
-  die qq|Temporary directory "$tempdir" doesn't exist or is not a directory.| unless (-e $tempdir && -d _);  # ensure temp dir exists and is indeed a directory
-  $h->{tempdir} = $tempdir;
+sub BUILDARGS {
+    my ( $class, @args ) = @_;
+    my %args;
+    $args{max_proc} = shift @args;
+    $args{tempdir} = shift @args if @args;
 
-  return bless($h,ref($c)||$c);
-};
+    return \%args;
+}
 
 sub start {
   my ($s,$identification)=@_;
 
-  die "Cannot start another process while you are in the child process"
-    if $s->{in_child};
   while ($s->{max_proc} && ( keys %{ $s->{processes} } ) >= $s->{max_proc}) {
     $s->on_wait;
     $s->wait_one_child(defined $s->{on_wait_period} ? &WNOHANG : undef);
@@ -49,18 +80,19 @@ sub start {
   if ($s->{max_proc}) {
     my $pid=fork();
     die "Cannot fork: $!" if !defined $pid;
-    if ($pid) {
+    if ($pid) {  # in parent
       $s->{processes}->{$pid}=$identification;
       $s->on_start($pid,$identification);
     } else {
-      $s->{in_child}=1 if !$pid;
+      Role::Tiny->apply_roles_to_object( $s, 'Parallel::ForkManager::Child' );
     }
     return $pid;
-  } else {
-    $s->{processes}->{$$}=$identification;
-    $s->on_start($$,$identification);
-    return 0; # Simulating the child which returns 0
   }
+  
+  # non-forking mode
+  $s->{processes}->{$$}=$identification;
+  $s->on_start($$,$identification);
+  return 0; # Simulating the child which returns 0
 }
 
 sub start_child {
@@ -77,22 +109,11 @@ sub start_child {
 sub finish {
   my ($s, $x, $r)=@_;
 
-  if ( $s->{in_child} ) {
-    if (defined($r)) {  # store the child's data structure
-      my $storable_tempfile = File::Spec->catfile($s->{tempdir}, 'Parallel-ForkManager-' . $s->{parent_pid} . '-' . $$ . '.txt');
-      my $stored = eval { return &store($r, $storable_tempfile); };
-
-      # handle Storables errors, IE logcarp or carp returning undef, or die (via logcroak or croak)
-      if (not $stored or $@) {
-        warn(qq|The storable module was unable to store the child's data structure to the temp file "$storable_tempfile":  | . join(', ', $@));
-      }
-    }
-    CORE::exit($x || 0);
-  }
-  if ($s->{max_proc} == 0) { # max_proc == 0
+  if ($s->{max_proc} == 0) { # nofork
     $s->on_finish($$, $x ,$s->{processes}->{$$}, 0, 0, $r);
     delete $s->{processes}->{$$};
   }
+
   return 0;
 }
 
@@ -107,7 +128,46 @@ sub wait_children {
 };
 
 *wait_childs=*wait_children; # compatibility
-*reap_finished_children=*wait_children; # behavioral synonym for clarity
+*reap_finished_children=*wait_children; # behavioral synonym for clarity 
+
+# TODO document the method
+sub retrieve {
+    my( $self, $kid ) = @_;
+
+    my $retrieved = undef;
+
+    my $storable_tempfile = File::Spec->catfile($self->{tempdir}, 'Parallel-ForkManager-' . $self->{parent_pid} . '-' . $kid . '.txt');
+
+    if (-e $storable_tempfile) {  # child has option of not storing anything, so we need to see if it did or not
+      $retrieved = eval { Storable::retrieve($storable_tempfile) };
+
+      # handle Storables errors
+      if (not $retrieved or $@) {
+        warn(qq|The storable module was unable to retrieve the child's data structure from the temporary file "$storable_tempfile":  | . join(', ', $@));
+      }
+
+      # clean up after ourselves
+      unlink $storable_tempfile;
+    }
+
+    return $retrieved;
+}
+
+sub store {
+    my( $self, $data ) = @_;
+
+    return unless defined $data;
+
+      my $storable_tempfile = File::Spec->catfile($self->{tempdir}, 'Parallel-ForkManager-' . $self->{parent_pid} . '-' . $$ . '.txt');
+      my $stored = eval { return Storable::store($data, $storable_tempfile); };
+
+      # handle Storables errors, IE logcarp or carp returning undef, or die (via logcroak or croak)
+      if (not $stored or $@) {
+        warn(qq|The storable module was unable to store the child's data structure to the temp file "$storable_tempfile":  | . join(', ', $@));
+      }
+}
+
+
 
 sub wait_one_child {
   my ($s,$flag)=@_;
@@ -122,20 +182,8 @@ sub wait_one_child {
     redo if !exists $s->{processes}->{$kid};
     my $id = delete $s->{processes}->{$kid};
 
-    # retrieve child data structure, if any
-    my $retrieved = undef;
-    my $storable_tempfile = File::Spec->catfile($s->{tempdir}, 'Parallel-ForkManager-' . $s->{parent_pid} . '-' . $kid . '.txt');
-    if (-e $storable_tempfile) {  # child has option of not storing anything, so we need to see if it did or not
-      $retrieved = eval { return &retrieve($storable_tempfile); };
-
-      # handle Storables errors
-      if (not $retrieved or $@) {
-        warn(qq|The storable module was unable to retrieve the child's data structure from the temporary file "$storable_tempfile":  | . join(', ', $@));
-      }
-
-      # clean up after ourselves
-      unlink $storable_tempfile;
-    }
+    # retrieve child data structure, if any 
+    my $retrieved = $s->retrieve($kid);
 
     $s->on_finish( $kid, $? >> 8 , $id, $? & 0x7f, $? & 0x80 ? 1 : 0, $retrieved);
     last;
@@ -154,11 +202,7 @@ sub wait_all_children {
 
 *wait_all_childs=*wait_all_children; # compatibility;
 
-sub max_procs { $_[0]->{max_proc}; }
-
-sub is_child  { $_[0]->{in_child} }
-
-sub is_parent { !$_[0]->{in_child} }
+sub max_procs { $_[0]->max_proc }
 
 sub running_procs {
     my $self = shift;
@@ -221,21 +265,6 @@ sub on_start {
   $s->{on_start}->(@par) if ref($s->{on_start}) eq 'CODE';
 };
 
-sub set_max_procs {
-  my ($s, $mp)=@_;
-
-  $s->{max_proc} = $mp;
-}
-
-sub set_waitpid_blocking_sleep {
-    my( $self, $period ) = @_;
-    $self->{waitpid_blocking_sleep} = $period;
-}
-
-sub waitpid_blocking_sleep {
-    $_[0]->{waitpid_blocking_sleep};
-}
-
 sub _waitpid { # Call waitpid() in the standard Unix fashion.
     my( $self, $flag ) = @_;
 
@@ -277,12 +306,13 @@ sub _waitpid_blocking {
     return waitpid -1, 0;
 }
 
-sub DESTROY {
-  my ($self) = @_;
+sub DEMOLISH {
+    my $self = shift;
 
-  if ($self->{auto_cleanup} && $self->{parent_pid} == $$ && -d $self->{tempdir}) {
-    File::Path::remove_tree($self->{tempdir});
-  }
+    no warnings 'uninitialized';
+
+    File::Path::remove_tree($self->{tempdir})
+        if $self->{auto_cleanup} and $self->{parent_pid} == $$ and -d $self->{tempdir};
 }
 
 1;
@@ -815,6 +845,59 @@ can add the following to your program:
 
     $pm->run_on_start(sub { srand });
 
+=head1 EXTENDING 
+
+As of version 2.0.0, C<Parallel::ForkManager> uses L<Moo> under the hood. When 
+a process is being forked from the parent object, the forked instance of the 
+object will be modified to consume the L<Parallel::ForkManager::Child>
+role. All of this makes extending L<Parallel::ForkManager> to implement 
+any storing/retrieving mechanism or any other behavior fairly easy.
+
+=head2 Example: store and retrieve data via a web service
+
+    {
+        package Parallel::ForkManager::Web;
+
+        use HTTP::Tiny;
+
+        use Moo;
+        extends 'Parallel::ForkManager';
+
+        has ua => (
+            is => 'ro',
+            lazy => 1,
+            default => sub {
+                HTTP::Tiny->new;
+            }
+        );
+
+        sub store {
+            my( $self, $data ) = @_;
+
+            $self->ua->post( "http://.../store/$$", { body => $data } );
+        }
+
+        sub retrieve {
+            my( $self, $kid_id ) = @_;
+
+            $self->ua->get( "http://.../store/$kid_id" )->{content};
+        }
+
+    }
+
+    my $fm = Parallel::ForkManager::Web->new(2);
+
+    $fm->run_on_finish(sub{
+        my $retrieved = $_[5];
+
+        print "got ", $retrieved, "\n";
+    });
+
+    $fm->start_child(sub {
+        return $_**2;
+    }) for 1..3;
+
+    $fm->wait_all_children;
 
 =head1 SECURITY
 
@@ -841,8 +924,8 @@ adding the "unix" layer? I.e.,
 
 =head1 BUGS AND LIMITATIONS
 
-Do not use Parallel::ForkManager in an environment, where other child
-processes can affect the run of the main program, so using this module
+Do not use Parallel::ForkManager in an environment where other child
+processes can affect the run of the main program; using this module
 is not recommended in an environment where fork() / wait() is already used.
 
 If you want to use more than one copies of the Parallel::ForkManager, then
