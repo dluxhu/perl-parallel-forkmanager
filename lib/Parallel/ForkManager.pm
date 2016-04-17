@@ -2,45 +2,74 @@ package Parallel::ForkManager;
 # ABSTRACT:  A simple parallel processing fork manager
 
 use POSIX ":sys_wait_h";
-use Storable qw(store retrieve);
+use Storable qw(retrieve);
 use File::Spec;
 use File::Temp ();
 use File::Path ();
 use Carp;
 
+use Parallel::ForkManager::Child;
+
 use strict;
 
-sub new {
-  my ($c,$processes,$tempdir)=@_;
+use Moo;
 
-  my $h={
-    max_proc   => $processes,
-    processes  => {},
-    in_child   => 0,
-    parent_pid => $$,
-    auto_cleanup => ($tempdir ? 0 : 1),
-    waitpid_blocking_sleep => 1,
-  };
+has max_proc => (
+    is => 'ro',
+    required => 1,
+    writer => 'set_max_procs',
+);
 
+has processes => (
+    is => 'ro',
+    default => sub { {} },
+);
 
-  # determine temporary directory for storing data structures
-  # add it to Parallel::ForkManager object so children can use it
-  # We don't let it clean up so it won't do it in the child process
-  # but we have our own DESTROY to do that.
-  if (not defined($tempdir) or not length($tempdir)) {
-    $tempdir = File::Temp::tempdir(CLEANUP => 0);
-  }
-  die qq|Temporary directory "$tempdir" doesn't exist or is not a directory.| unless (-e $tempdir && -d _);  # ensure temp dir exists and is indeed a directory
-  $h->{tempdir} = $tempdir;
+has parent_pid => (
+    is => 'ro',
+    default => sub { $$ },
+);
 
-  return bless($h,ref($c)||$c);
-};
+has auto_cleanup => (
+    is => 'rw',
+    default => sub { 1 },
+);
+
+has waitpid_blocking_sleep => (
+    is =>'ro',
+    writer => 'set_waitpid_blocking_sleep',
+    default => sub { 1 },
+);
+
+has tempdir => (
+    is => 'ro',
+    default => sub {
+        File::Temp::tempdir(CLEANUP => 0);
+    },
+    trigger => sub {
+        my( $self, $dir ) = @_;
+
+        die qq|Temporary directory "$dir" doesn't exist or is not a directory.| 
+            unless -d $dir;
+
+        $self->auto_cleanup(0);
+    },
+);
+
+sub in_child { 0 }
+
+sub BUILDARGS {
+    my ( $class, @args ) = @_;
+    my %args;
+    $args{max_proc} = shift @args;
+    $args{tempdir} = shift @args if @args;
+
+    return \%args;
+}
 
 sub start {
   my ($s,$identification)=@_;
 
-  die "Cannot start another process while you are in the child process"
-    if $s->{in_child};
   while ($s->{max_proc} && ( keys %{ $s->{processes} } ) >= $s->{max_proc}) {
     $s->on_wait;
     $s->wait_one_child(defined $s->{on_wait_period} ? &WNOHANG : undef);
@@ -49,18 +78,20 @@ sub start {
   if ($s->{max_proc}) {
     my $pid=fork();
     die "Cannot fork: $!" if !defined $pid;
-    if ($pid) {
+    if ($pid) {  # in parent
       $s->{processes}->{$pid}=$identification;
       $s->on_start($pid,$identification);
     } else {
-      $s->{in_child}=1 if !$pid;
+      bless $s, 'Parallel::ForkManager::Child';
+      $s->{in_child} = 1;
     }
     return $pid;
-  } else {
-    $s->{processes}->{$$}=$identification;
-    $s->on_start($$,$identification);
-    return 0; # Simulating the child which returns 0
   }
+  
+  # non-forking mode
+  $s->{processes}->{$$}=$identification;
+  $s->on_start($$,$identification);
+  return 0; # Simulating the child which returns 0
 }
 
 sub start_child {
@@ -77,22 +108,11 @@ sub start_child {
 sub finish {
   my ($s, $x, $r)=@_;
 
-  if ( $s->{in_child} ) {
-    if (defined($r)) {  # store the child's data structure
-      my $storable_tempfile = File::Spec->catfile($s->{tempdir}, 'Parallel-ForkManager-' . $s->{parent_pid} . '-' . $$ . '.txt');
-      my $stored = eval { return &store($r, $storable_tempfile); };
-
-      # handle Storables errors, IE logcarp or carp returning undef, or die (via logcroak or croak)
-      if (not $stored or $@) {
-        warn(qq|The storable module was unable to store the child's data structure to the temp file "$storable_tempfile":  | . join(', ', $@));
-      }
-    }
-    CORE::exit($x || 0);
-  }
-  if ($s->{max_proc} == 0) { # max_proc == 0
+  if ($s->{max_proc} == 0) { # nofork
     $s->on_finish($$, $x ,$s->{processes}->{$$}, 0, 0, $r);
     delete $s->{processes}->{$$};
   }
+
   return 0;
 }
 
@@ -154,11 +174,10 @@ sub wait_all_children {
 
 *wait_all_childs=*wait_all_children; # compatibility;
 
-sub max_procs { $_[0]->{max_proc}; }
+sub max_procs { $_[0]->max_proc }
 
-sub is_child  { $_[0]->{in_child} }
-
-sub is_parent { !$_[0]->{in_child} }
+sub is_child  { 0 }
+sub is_parent { 1 }
 
 sub running_procs {
     my $self = shift;
@@ -221,21 +240,6 @@ sub on_start {
   $s->{on_start}->(@par) if ref($s->{on_start}) eq 'CODE';
 };
 
-sub set_max_procs {
-  my ($s, $mp)=@_;
-
-  $s->{max_proc} = $mp;
-}
-
-sub set_waitpid_blocking_sleep {
-    my( $self, $period ) = @_;
-    $self->{waitpid_blocking_sleep} = $period;
-}
-
-sub waitpid_blocking_sleep {
-    $_[0]->{waitpid_blocking_sleep};
-}
-
 sub _waitpid { # Call waitpid() in the standard Unix fashion.
     my( $self, $flag ) = @_;
 
@@ -277,12 +281,13 @@ sub _waitpid_blocking {
     return waitpid -1, 0;
 }
 
-sub DESTROY {
-  my ($self) = @_;
+sub DEMOLISH {
+    my $self = shift;
 
-  if ($self->{auto_cleanup} && $self->{parent_pid} == $$ && -d $self->{tempdir}) {
-    File::Path::remove_tree($self->{tempdir});
-  }
+    no warnings 'uninitialized';
+
+    File::Path::remove_tree($self->{tempdir})
+        if $self->{auto_cleanup} and $self->{parent_pid} == $$ and -d $self->{tempdir};
 }
 
 1;
