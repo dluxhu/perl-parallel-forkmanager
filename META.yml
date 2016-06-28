@@ -1,0 +1,45 @@
+---
+abstract: 'A simple parallel processing fork manager'
+author:
+  - 'dLux (Szabó, Balázs) <dlux@dlux.hu>'
+  - 'Yanick Champoux <yanick@cpan.org>'
+  - 'Gabor Szabo <gabor@szabgab.com>'
+build_requires:
+  ExtUtils::MakeMaker: '0'
+  File::Spec: '0'
+  IO::Handle: '0'
+  IPC::Open3: '0'
+  Test::More: '0.94'
+  Test::Warn: '0'
+  perl: '5.006'
+  warnings: '0'
+configure_requires:
+  ExtUtils::MakeMaker: '0'
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 5.043, CPAN::Meta::Converter version 2.150001'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: Parallel-ForkManager
+provides:
+  Parallel::ForkManager:
+    file: lib/Parallel/ForkManager.pm
+    version: '1.19'
+requires:
+  Carp: '0'
+  File::Path: '0'
+  File::Spec: '0'
+  File::Temp: '0'
+  POSIX: '0'
+  Storable: '0'
+  strict: '0'
+resources:
+  bugtracker: https://github.com/dluxhu/perl-parallel-forkmanager/issues
+  homepage: https://github.com/dluxhu/perl-parallel-forkmanager
+  repository: https://github.com/dluxhu/perl-parallel-forkmanager.git
+version: '1.19'
+x_authority: cpan:DLUX
+x_contributors:
+  - 'Ninebit <kevin@9b.io>'
+  - 'Shlomi Fish <shlomif@shlomifish.org>'

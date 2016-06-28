@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Project
+  xmlns="http://usefulinc.com/ns/doap#"
+  xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  >
+  <name>Parallel-ForkManager</name>
+  <shortdesc>A simple parallel processing fork manager</shortdesc>
+  <developer>
+    <foaf:Person>
+      <foaf:name>dLux (Szabó, Balázs)</foaf:name>
+      <foaf:mbox rdf:resource="mailto:dlux@dlux.hu" />
+    </foaf:Person>
+  </developer>
+  <developer>
+    <foaf:Person>
+      <foaf:name>Yanick Champoux</foaf:name>
+      <foaf:mbox rdf:resource="mailto:yanick@cpan.org" />
+    </foaf:Person>
+  </developer>
+  <developer>
+    <foaf:Person>
+      <foaf:name>Gabor Szabo</foaf:name>
+      <foaf:mbox rdf:resource="mailto:gabor@szabgab.com" />
+    </foaf:Person>
+  </developer>
+  <helper>
+    <foaf:Person>
+      <foaf:name>Ninebit</foaf:name>
+      <foaf:mbox rdf:resource="mailto:kevin@9b.io" />
+    </foaf:Person>
+  </helper>
+  <helper>
+    <foaf:Person>
+      <foaf:name>Shlomi Fish</foaf:name>
+      <foaf:mbox rdf:resource="mailto:shlomif@shlomifish.org" />
+    </foaf:Person>
+  </helper>
+  <license rdf:resource="http://dev.perl.org/licenses/" />
+  <homepage rdf:resource="https://github.com/dluxhu/perl-parallel-forkmanager" />
+  <bug-database rdf:resource="https://github.com/dluxhu/perl-parallel-forkmanager/issues" />
+  <repository>
+    <GitRepository>
+      <browse rdf:resource="https://github.com/dluxhu/perl-parallel-forkmanager" />
+      <location rdf:resource="https://github.com/dluxhu/perl-parallel-forkmanager.git" />
+    </GitRepository>
+  </repository>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.1</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2001-04-26</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.2</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2001-05-14</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.3</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2001-08-24</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.4</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2002-07-04</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.5</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2002-12-25</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.6</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-08-15</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.7</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-09-28</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.8</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-08-25</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7.9</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-11-01</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.5</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2000-10-18</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.6</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2000-11-30</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">0.7</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2001-04-04</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.0.0</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2012-12-23</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.01</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2012-12-23</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.02</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2012-12-24</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.03</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2013-03-06</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.04</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2013-09-03</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.05</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2013-09-18</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.06</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2013-12-24</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.07</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2014-11-10</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.08</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-01-07</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.09</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-01-08</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.10_1</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-01-22</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.10_2</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-01-25</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.11</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-01-30</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.12</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-02-23</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.13</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-05-11</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.14</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-05-17</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.15</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-07-08</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.16</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-10-08</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.17</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-11-28</dc:issued>
+    </Version>
+  </release>
+  <release>
+    <Version>
+      <revision rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1.18</revision>
+      <dc:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2016-03-29</dc:issued>
+    </Version>
+  </release>
+  <programming-language>Perl</programming-language>
+</Project>
