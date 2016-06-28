@@ -11,6 +11,7 @@ Revision history for Perl extension Parallel::ForkManager.
     between master/children processes.
 
   [ ENHANCEMENTS ]
+  - New way to spawn workers via 'start_child'.
 
   [ NEW FEATURES ]
 
