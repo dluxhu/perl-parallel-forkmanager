@@ -63,6 +63,17 @@ sub start {
   }
 }
 
+sub start_child {
+    my $self = shift;
+    my $sub = pop;
+    my $identification = shift;
+
+    $self->start( $identification ) # in the parent
+            # ... or the child
+        or $self->finish( 0, $sub->() );
+}
+
+
 sub finish {
   my ($s, $x, $r)=@_;
 
@@ -377,12 +388,17 @@ An optional $process_identifier can be provided to this method... It is used by
 the "run_on_finish" callback (see CALLBACKS) for identifying the finished
 process.
 
+=item start_child [ $process_identifier, ] \&callback
+
+Like C<start>, but will run the C<&callback> as the child. If the callback returns anything,
+it'll be passed as the data to transmit back to the parent process via C<finish()>.
+
 =item finish [ $exit_code [, $data_structure_reference] ]
 
 Closes the child process by exiting and accepts an optional exit code
 (default exit code is 0) which can be retrieved in the parent via callback.
 If the second optional parameter is provided, the child attempts to send
-it's contents back to the parent. If you use the program in debug mode
+its contents back to the parent. If you use the program in debug mode
 ($processes == 0), this method just calls the callback.
 
 If the $data_structure_reference is provided, then it is serialized and
