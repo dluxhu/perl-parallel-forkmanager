@@ -815,6 +815,19 @@ the directory used by Parallel::ForkManager is restricted to the current user
 only (the default behavior is to create a directory,
 via L<File::Temp>'s C<tempdir>, which does that).
 
+=head1 TROUBLESHOOTING
+
+=head2 PerlIO::gzip and Parallel::ForkManager do not play nice together
+
+If you are using L<PerlIO::gzip> in your child processes, you may end up with 
+garbled files. This is not really P::FM's fault, but rather a problem between
+L<PerlIO::gzip> and C<fork()> (see L<https://rt.cpan.org/Public/Bug/Display.html?id=114557>).
+
+Fortunately, it seems there is an easy way to fix the problem by
+adding the "unix" layer? I.e.,
+
+    open(IN, '<:unix:gzip', ...
+
 =head1 BUGS AND LIMITATIONS
 
 Do not use Parallel::ForkManager in an environment, where other child
