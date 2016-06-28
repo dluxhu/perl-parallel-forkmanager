@@ -6,17 +6,25 @@ Revision history for Perl extension Parallel::ForkManager.
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
-  - Typo fixes. (GH#10)
-  - Add short discussion on security about the information passing via files
-    between master/children processes.
-  - Document the problem between PerlIO::fzip and fork(). (GH#11) 
 
   [ ENHANCEMENTS ]
-  - New way to spawn workers via 'start_child'.
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+1.19 2016-06-28
+  [ DOCUMENTATION ]
+    - Typo fixes. (GH#10)
+    - Add short discussion on security about the information passing via
+      files between master/children processes.
+    - Document the problem between PerlIO::fzip and fork(). (GH#11) 
+
+  [ ENHANCEMENTS ]
+    - New way to spawn workers via 'start_child'.
+
+  [ STATISTICS ]
+    - code churn: 4 files changed, 114 insertions(+), 5 deletions(-)
 
 1.18 2016-03-29
   [ BUG FIXES ]
