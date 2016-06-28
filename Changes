@@ -7,6 +7,8 @@ Revision history for Perl extension Parallel::ForkManager.
 
   [ DOCUMENTATION ]
   - Typo fixes. (GH#10)
+  - Add short discussion on security about the information passing via files
+    between master/children processes.
 
   [ ENHANCEMENTS ]
 
