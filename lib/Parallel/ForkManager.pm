@@ -171,7 +171,7 @@ sub wait_for_available_procs {
     my( $self, $nbr ) = @_;
     $nbr ||= 1;
 
-    croak "nbr processes '$nbr' higher than the max nbr of processes (@{[ $self->max_procs ]})"
+    croak "number of processes '$nbr' higher than the max number of processes (@{[ $self->max_procs ]})"
         if $nbr > $self->max_procs;
 
     $self->wait_one_child until $self->max_procs - $self->running_procs >= $nbr;
