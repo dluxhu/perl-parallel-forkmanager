@@ -114,7 +114,7 @@ sub wait_one_child {
 
   my $kid;
   while (1) {
-    $kid = $s->_waitpid(-1,$flag||=0);
+    $kid = $s->_waitpid($flag||=0);
 
     last unless defined $kid;
 
@@ -237,7 +237,7 @@ sub waitpid_blocking_sleep {
 }
 
 sub _waitpid { # Call waitpid() in the standard Unix fashion.
-    my( $self, undef, $flag ) = @_;
+    my( $self, $flag ) = @_;
 
     return $flag ? $self->_waitpid_non_blocking : $self->_waitpid_blocking;
 }
