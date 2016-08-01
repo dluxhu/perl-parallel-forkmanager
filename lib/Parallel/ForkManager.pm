@@ -110,11 +110,11 @@ sub wait_children {
 *reap_finished_children=*wait_children; # behavioral synonym for clarity
 
 sub wait_one_child {
-  my ($s,$par)=@_;
+  my ($s,$flag)=@_;
 
   my $kid;
   while (1) {
-    $kid = $s->_waitpid(-1,$par||=0);
+    $kid = $s->_waitpid(-1,$flag||=0);
 
     last unless defined $kid;
 
