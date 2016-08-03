@@ -8,6 +8,8 @@ Revision history for Perl extension Parallel::ForkManager.
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - Expand abbreviations in error messages. (GH#14, Ricardo Signes)
+  - Rename variables and simplify `_waitpid` signature. (GH#14, Ricardo Signes)
 
   [ NEW FEATURES ]
 

@@ -110,11 +110,11 @@ sub wait_children {
 *reap_finished_children=*wait_children; # behavioral synonym for clarity
 
 sub wait_one_child {
-  my ($s,$par)=@_;
+  my ($s,$flag)=@_;
 
   my $kid;
   while (1) {
-    $kid = $s->_waitpid(-1,$par||=0);
+    $kid = $s->_waitpid($flag||=0);
 
     last unless defined $kid;
 
@@ -171,7 +171,7 @@ sub wait_for_available_procs {
     my( $self, $nbr ) = @_;
     $nbr ||= 1;
 
-    croak "nbr processes '$nbr' higher than the max nbr of processes (@{[ $self->max_procs ]})"
+    croak "number of processes '$nbr' higher than the max number of processes (@{[ $self->max_procs ]})"
         if $nbr > $self->max_procs;
 
     $self->wait_one_child until $self->max_procs - $self->running_procs >= $nbr;
@@ -237,7 +237,7 @@ sub waitpid_blocking_sleep {
 }
 
 sub _waitpid { # Call waitpid() in the standard Unix fashion.
-    my( $self, undef, $flag ) = @_;
+    my( $self, $flag ) = @_;
 
     return $flag ? $self->_waitpid_non_blocking : $self->_waitpid_blocking;
 }
