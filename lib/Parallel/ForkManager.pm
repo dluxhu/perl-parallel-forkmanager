@@ -805,6 +805,17 @@ process whatever is retrieved.
 
 =for example end
 
+=head1 USING RAND() IN FORKED PROCESSES
+
+A caveat worth noting is that all forked processes will use the
+same random seed, so potentially providing the same results (see
+L<http://blogs.perl.org/users/brian_phillips/2010/06/when-rand-isnt-random.html>).
+If you are using C<rand()> and want each forked child to use a different seed, you
+can add the following to your program:
+
+    $pm->run_on_start(sub { srand });
+
+
 =head1 SECURITY
 
 Parallel::ForkManager uses temporary files when 
