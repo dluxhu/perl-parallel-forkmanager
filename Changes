@@ -6,7 +6,7 @@ Revision history for Perl extension Parallel::ForkManager.
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
-  - Add section about rand() and forked processed. (GH#22)
+  - Add section about rand() and forked processes. (GH#22)
 
   [ ENHANCEMENTS ]
   - Expand abbreviations in error messages. (GH#14, Ricardo Signes)
