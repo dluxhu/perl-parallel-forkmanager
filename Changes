@@ -6,15 +6,24 @@ Revision history for Perl extension Parallel::ForkManager.
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
-  - Add section about rand() and forked processes. (GH#22)
 
   [ ENHANCEMENTS ]
-  - Expand abbreviations in error messages. (GH#14, Ricardo Signes)
-  - Rename variables and simplify `_waitpid` signature. (GH#14, Ricardo Signes)
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+1.20 2018-07-18
+  [ DOCUMENTATION ]
+    - Add section about rand() and forked processes. (GH#22)
+
+  [ ENHANCEMENTS ]
+    - Expand abbreviations in error messages. (GH#14, Ricardo Signes)
+    - Rename variables and simplify `_waitpid` signature. (GH#14, Ricardo
+      Signes)
+
+  [ STATISTICS ]
+    - code churn: 6 files changed, 80 insertions(+), 33 deletions(-)
 
 1.19 2016-06-28
   [ DOCUMENTATION ]
