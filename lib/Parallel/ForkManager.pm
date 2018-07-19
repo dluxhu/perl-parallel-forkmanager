@@ -82,8 +82,7 @@ sub start {
       $s->{processes}->{$pid}=$identification;
       $s->on_start($pid,$identification);
     } else {
-      bless $s, 'Parallel::ForkManager::Child';
-      $s->{in_child} = 1;
+      Role::Tiny->apply_roles_to_object( $s, 'Parallel::ForkManager::Child' );
     }
     return $pid;
   }

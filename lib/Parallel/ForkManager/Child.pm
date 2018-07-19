@@ -6,12 +6,10 @@ use warnings;
 use Carp;
 use Storable qw(store);
 
-use Moo;
+use Moo::Role;
 
-extends 'Parallel::ForkManager';
-
-sub in_child { 1 }
-sub is_child { 1 }
+sub in_child  { 1 }
+sub is_child  { 1 }
 sub is_parent { 0 }
 
 sub start {
