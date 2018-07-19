@@ -1,0 +1,8 @@
+I want to
+
+* change it to use Moo.
+
+* The child process gets reclasses as Parallel::FM::Child, with the
+overloading.
+
+* Use Beam::Emitter
