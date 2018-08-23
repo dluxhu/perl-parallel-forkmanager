@@ -56,6 +56,11 @@ has tempdir => (
     },
 );
 
+has child_role => (
+    is => 'ro',
+    default => 'Parallel::ForkManager::Child',
+);
+
 sub is_child  { 0 }
 sub is_parent { 1 }
 
@@ -63,8 +68,14 @@ sub is_parent { 1 }
 sub BUILDARGS {
     my ( undef, @args ) = @_;
     my %args;
-    $args{max_proc} = shift @args;
-    $args{tempdir} = shift @args if @args;
+
+    if ( $args[0] =~ /^\d+$/ ) {
+        $args{max_proc} = shift @args;
+        $args{tempdir} = shift @args if @args;
+    }
+    else {
+        %args = @args;
+    }
 
     return \%args;
 }
@@ -84,7 +95,7 @@ sub start {
       $s->{processes}->{$pid}=$identification;
       $s->on_start($pid,$identification);
     } else {
-      Role::Tiny->apply_roles_to_object( $s, 'Parallel::ForkManager::Child' );
+      Role::Tiny->apply_roles_to_object( $s, $s->child_role );
     }
     return $pid;
   }
@@ -406,6 +417,21 @@ below). If not provided, it is set via a call to L<File::Temp>::tempdir().
 
 The new method will die if the temporary directory does not exist or it is not
 a directory.
+
+Since version 2.00, the constructor can also be called in the typical Moo/Moose 
+fashion. I.e.
+
+    my $fm = Parallel::ForkManager->new(
+        max_procs => 4,
+        tempdir => '...',
+        child_role => 'Parallel::ForkManager::CustomChild',
+    );
+
+=item child_role 
+
+Returns the name of the role consumed by the ForkManager object in 
+child processes. Defaults to L<Parallel::ForkManager::Child> and can 
+be set to something else via the constructor.
 
 =item start [ $process_identifier ]
 
@@ -898,6 +924,22 @@ any storing/retrieving mechanism or any other behavior fairly easy.
     }) for 1..3;
 
     $fm->wait_all_children;
+
+=head2 Example: have the child processes exit differently
+
+    use Parallel::ForkManager;
+
+    package Parallel::ForkManager::Child::PosixExit {
+        use Moo::Role;
+        with 'Parallel::ForkManager::Child';
+
+        sub finish  { POSIX::_exit() };
+    }
+
+    my $fm = Parallel::ForkManager->new(
+        max_proc   => 1,
+        child_role => 'Parallel::ForkManager::Child::PosixExit'
+    );
 
 =head1 SECURITY
 

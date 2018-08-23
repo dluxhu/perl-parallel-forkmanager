@@ -8,12 +8,13 @@ Revision history for Perl extension Parallel::ForkManager.
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - add 'child_role' attribute for customization.
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
 
-2.00 2018-08-22
+2.00 2018-08-22 (TRIAL)
   [ API CHANGES ]
     - Change the guts to be Moo-based. (GH#24)
 
