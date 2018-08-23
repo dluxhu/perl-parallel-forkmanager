@@ -61,7 +61,7 @@ sub is_parent { 1 }
 
 
 sub BUILDARGS {
-    my ( $class, @args ) = @_;
+    my ( undef, @args ) = @_;
     my %args;
     $args{max_proc} = shift @args;
     $args{tempdir} = shift @args if @args;
