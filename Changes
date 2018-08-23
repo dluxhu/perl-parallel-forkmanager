@@ -1,18 +1,11 @@
 Revision history for Perl extension Parallel::ForkManager.
 
-{{$NEXT}}
+2.00 2018-08-22
   [ API CHANGES ]
-  - Change the guts to be Moo-based. (GH#24)
-
-  [ BUG FIXES ]
-
-  [ DOCUMENTATION ]
-
-  [ ENHANCEMENTS ]
-
-  [ NEW FEATURES ]
+    - Change the guts to be Moo-based. (GH#24)
 
   [ STATISTICS ]
+    - code churn: 5 files changed, 240 insertions(+), 89 deletions(-)
 
 1.20 2018-07-18
   [ DOCUMENTATION ]
