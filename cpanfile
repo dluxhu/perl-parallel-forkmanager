@@ -2,9 +2,12 @@ requires "Carp" => "0";
 requires "File::Path" => "0";
 requires "File::Spec" => "0";
 requires "File::Temp" => "0";
+requires "Moo" => "0";
+requires "Moo::Role" => "0";
 requires "POSIX" => "0";
 requires "Storable" => "0";
 requires "strict" => "0";
+requires "warnings" => "0";
 
 on 'test' => sub {
   requires "ExtUtils::MakeMaker" => "0";
@@ -14,7 +17,6 @@ on 'test' => sub {
   requires "Test::More" => "0.94";
   requires "Test::Warn" => "0";
   requires "perl" => "5.006";
-  requires "warnings" => "0";
 };
 
 on 'test' => sub {

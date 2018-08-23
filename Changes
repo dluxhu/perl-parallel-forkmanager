@@ -2,6 +2,7 @@ Revision history for Perl extension Parallel::ForkManager.
 
 {{$NEXT}}
   [ API CHANGES ]
+  - Change the guts to be Moo-based. (GH#24)
 
   [ BUG FIXES ]
 
