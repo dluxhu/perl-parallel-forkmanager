@@ -49,7 +49,7 @@ has tempdir => (
     trigger => sub {
         my( $self, $dir ) = @_;
 
-        die qq|Temporary directory "$dir" doesn't exist or is not a directory.| 
+        die qq|Temporary directory "$dir" doesn't exist or is not a directory.|
             unless -d $dir;
 
         $self->auto_cleanup(0);
@@ -99,7 +99,7 @@ sub start {
     }
     return $pid;
   }
-  
+
   # non-forking mode
   $s->{processes}->{$$}=$identification;
   $s->on_start($$,$identification);
@@ -139,7 +139,7 @@ sub wait_children {
 };
 
 *wait_childs=*wait_children; # compatibility
-*reap_finished_children=*wait_children; # behavioral synonym for clarity 
+*reap_finished_children=*wait_children; # behavioral synonym for clarity
 
 # TODO document the method
 sub retrieve {
@@ -193,7 +193,7 @@ sub wait_one_child {
     redo if !exists $s->{processes}->{$kid};
     my $id = delete $s->{processes}->{$kid};
 
-    # retrieve child data structure, if any 
+    # retrieve child data structure, if any
     my $retrieved = $s->retrieve($kid);
 
     $s->on_finish( $kid, $? >> 8 , $id, $? & 0x7f, $? & 0x80 ? 1 : 0, $retrieved);
@@ -387,7 +387,7 @@ You must specify the maximum number of processes to be created. If you
 specify 0, then NO fork will be done; this is good for debugging purposes.
 
 Next, use $pm->start to do the fork. $pm returns 0 for the child process,
-and child pid for the parent process (see also L<perlfunc(1p)/fork()>).
+and child pid for the parent process (see also L<perlfunc/fork>).
 The "and next" skips the internal loop in the parent process. NOTE:
 $pm->start dies if the fork fails.
 
@@ -418,7 +418,7 @@ below). If not provided, it is set via a call to L<File::Temp>::tempdir().
 The new method will die if the temporary directory does not exist or it is not
 a directory.
 
-Since version 2.00, the constructor can also be called in the typical Moo/Moose 
+Since version 2.00, the constructor can also be called in the typical Moo/Moose
 fashion. I.e.
 
     my $fm = Parallel::ForkManager->new(
@@ -427,10 +427,10 @@ fashion. I.e.
         child_role => 'Parallel::ForkManager::CustomChild',
     );
 
-=item child_role 
+=item child_role
 
-Returns the name of the role consumed by the ForkManager object in 
-child processes. Defaults to L<Parallel::ForkManager::Child> and can 
+Returns the name of the role consumed by the ForkManager object in
+child processes. Defaults to L<Parallel::ForkManager::Child> and can
 be set to something else via the constructor.
 
 =item start [ $process_identifier ]
@@ -483,7 +483,7 @@ Returns C<true> if within the parent or C<false> if within the child.
 
 Returns C<true> if within the child or C<false> if within the parent.
 
-=item max_procs 
+=item max_procs
 
 Returns the maximal number of processes the object will fork.
 
@@ -503,12 +503,12 @@ C<start> or C<wait_all_children>.
 Wait until C<$n> available process slots are available.
 If C<$n> is not given, defaults to I<1>.
 
-=item waitpid_blocking_sleep 
+=item waitpid_blocking_sleep
 
 Returns the sleep period, in seconds, of the pseudo-blocking calls. The sleep
-period can be a fraction of second. 
+period can be a fraction of second.
 
-Returns C<0> if disabled. 
+Returns C<0> if disabled.
 
 Defaults to 1 second.
 
@@ -574,12 +574,12 @@ No parameters are passed to the $code on the call.
 
 =head1 BLOCKING CALLS
 
-When it comes to waiting for child processes to terminate, C<Parallel::ForkManager> is between 
+When it comes to waiting for child processes to terminate, C<Parallel::ForkManager> is between
 a fork and a hard place (if you excuse the terrible pun). The underlying Perl C<waitpid> function
-that the module relies on can block until either one specific or any child process 
+that the module relies on can block until either one specific or any child process
 terminate, but not for a process part of a given group.
 
-This means that the module can do one of two things when it waits for 
+This means that the module can do one of two things when it waits for
 one of its child processes to terminate:
 
 =over
@@ -599,8 +599,8 @@ The code does something along the lines of
 
 This is the default behavior that the module will use.
 This is not the most efficient way to wait for child processes, but it's
-the safest way to ensure that C<Parallel::ForkManager> won't interfere with 
-any other part of the codebase. 
+the safest way to ensure that C<Parallel::ForkManager> won't interfere with
+any other part of the codebase.
 
 The sleep period is set via the method C<set_waitpid_blocking_sleep>.
 
@@ -610,10 +610,10 @@ Alternatively, C<Parallel::ForkManager> can call C<waitpid> such that it will
 block until any child process terminate. If the child process was not one of
 the monitored subprocesses, the wait will resume. This is more efficient, but mean
 that C<P::FM> can captures (and discards) the termination notification that a different
-part of the code might be waiting for. 
+part of the code might be waiting for.
 
 If this is a race condition
-that doesn't apply to your codebase, you can set the 
+that doesn't apply to your codebase, you can set the
 I<waitpid_blocking_sleep> period to C<0>, which will enable C<waitpid> call blocking.
 
     my $pm = Parallel::ForkManager->new( 4 );
@@ -871,12 +871,12 @@ can add the following to your program:
 
     $pm->run_on_start(sub { srand });
 
-=head1 EXTENDING 
+=head1 EXTENDING
 
-As of version 2.0.0, C<Parallel::ForkManager> uses L<Moo> under the hood. When 
-a process is being forked from the parent object, the forked instance of the 
+As of version 2.0.0, C<Parallel::ForkManager> uses L<Moo> under the hood. When
+a process is being forked from the parent object, the forked instance of the
 object will be modified to consume the L<Parallel::ForkManager::Child>
-role. All of this makes extending L<Parallel::ForkManager> to implement 
+role. All of this makes extending L<Parallel::ForkManager> to implement
 any storing/retrieving mechanism or any other behavior fairly easy.
 
 =head2 Example: store and retrieve data via a web service
@@ -943,9 +943,9 @@ any storing/retrieving mechanism or any other behavior fairly easy.
 
 =head1 SECURITY
 
-Parallel::ForkManager uses temporary files when 
+Parallel::ForkManager uses temporary files when
 a child process returns information to its parent process. The filenames are
-based on the process of the parent and child processes, so they are 
+based on the process of the parent and child processes, so they are
 fairly easy to guess. So if security is a concern in your environment, make sure
 the directory used by Parallel::ForkManager is restricted to the current user
 only (the default behavior is to create a directory,
@@ -955,7 +955,7 @@ via L<File::Temp>'s C<tempdir>, which does that).
 
 =head2 PerlIO::gzip and Parallel::ForkManager do not play nice together
 
-If you are using L<PerlIO::gzip> in your child processes, you may end up with 
+If you are using L<PerlIO::gzip> in your child processes, you may end up with
 garbled files. This is not really P::FM's fault, but rather a problem between
 L<PerlIO::gzip> and C<fork()> (see L<https://rt.cpan.org/Public/Bug/Display.html?id=114557>).
 
