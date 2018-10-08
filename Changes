@@ -1,6 +1,8 @@
 Revision history for Perl extension Parallel::ForkManager.
 
 {{$NEXT}}
+  - Promote to stable release.
+
   [ API CHANGES ]
 
   [ BUG FIXES ]
