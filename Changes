@@ -1,19 +1,10 @@
 Revision history for Perl extension Parallel::ForkManager.
 
-{{$NEXT}}
+2.02 2018-10-08
   - Promote to stable release.
 
-  [ API CHANGES ]
-
-  [ BUG FIXES ]
-
-  [ DOCUMENTATION ]
-
-  [ ENHANCEMENTS ]
-
-  [ NEW FEATURES ]
-
   [ STATISTICS ]
+    - code churn: 1 file changed, 9 insertions(+), 1 deletion(-)
 
 2.01 2018-08-23
   [ ENHANCEMENTS ]

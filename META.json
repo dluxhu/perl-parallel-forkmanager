@@ -1,0 +1,93 @@
+{
+   "abstract" : "A simple parallel processing fork manager",
+   "author" : [
+      "dLux (Szab\u00f3, Bal\u00e1zs) <dlux@dlux.hu>",
+      "Yanick Champoux <yanick@cpan.org>",
+      "Gabor Szabo <gabor@szabgab.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.011, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "Parallel-ForkManager",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::More" : "0.96",
+            "Test::Vars" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "File::Path" : "0",
+            "File::Spec" : "0",
+            "File::Temp" : "0",
+            "Moo" : "0",
+            "Moo::Role" : "0",
+            "POSIX" : "0",
+            "Storable" : "0",
+            "strict" : "0",
+            "warnings" : "0"
+         }
+      },
+      "test" : {
+         "recommends" : {
+            "CPAN::Meta" : "2.120900"
+         },
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0",
+            "File::Spec" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open3" : "0",
+            "Test::More" : "0.94",
+            "Test::Warn" : "0",
+            "perl" : "5.006"
+         }
+      }
+   },
+   "provides" : {
+      "Parallel::ForkManager" : {
+         "file" : "lib/Parallel/ForkManager.pm",
+         "version" : "2.02"
+      },
+      "Parallel::ForkManager::Child" : {
+         "file" : "lib/Parallel/ForkManager/Child.pm",
+         "version" : "2.02"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/dluxhu/perl-parallel-forkmanager/issues"
+      },
+      "homepage" : "https://github.com/dluxhu/perl-parallel-forkmanager",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/dluxhu/perl-parallel-forkmanager.git",
+         "web" : "https://github.com/dluxhu/perl-parallel-forkmanager"
+      }
+   },
+   "version" : "2.02",
+   "x_authority" : "cpan:DLUX",
+   "x_contributor_covenant" : {
+      "version" : 0.01
+   },
+   "x_contributors" : [
+      "Ninebit <kevin@9b.io>",
+      "Ricardo Signes <rjbs@cpan.org>",
+      "Shlomi Fish <shlomif@shlomifish.org>"
+   ],
+   "x_serialization_backend" : "Cpanel::JSON::XS version 3.0115"
+}
+
