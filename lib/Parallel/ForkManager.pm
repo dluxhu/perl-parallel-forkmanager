@@ -496,7 +496,7 @@ C<start> or C<wait_all_children>.
 
     my @pids = $pm->running_procs;
 
-    my $nbr_children =- $pm->running_procs;
+    my $nbr_children = $pm->running_procs;
 
 =item wait_for_available_procs( $n )
 

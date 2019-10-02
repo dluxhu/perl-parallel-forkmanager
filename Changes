@@ -7,6 +7,7 @@ Revision history for Perl extension Parallel::ForkManager.
 
   [ DOCUMENTATION ]
   - Standardize the link to `fork`. (GH#32)
+  - Fix typo in code example. (GH#31, dimir)
 
   [ ENHANCEMENTS ]
 
