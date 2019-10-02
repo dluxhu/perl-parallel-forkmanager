@@ -6,6 +6,7 @@ Revision history for Perl extension Parallel::ForkManager.
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
+  - Standardize the link to `fork`. (GH#32)
 
   [ ENHANCEMENTS ]
 
@@ -50,7 +51,7 @@ Revision history for Perl extension Parallel::ForkManager.
     - Typo fixes. (GH#10)
     - Add short discussion on security about the information passing via
       files between master/children processes.
-    - Document the problem between PerlIO::fzip and fork(). (GH#11) 
+    - Document the problem between PerlIO::fzip and fork(). (GH#11)
 
   [ ENHANCEMENTS ]
     - New way to spawn workers via 'start_child'.
@@ -60,7 +61,7 @@ Revision history for Perl extension Parallel::ForkManager.
 
 1.18 2016-03-29
   [ BUG FIXES ]
-    - Storage file between child and parent could have the wrong name, 
+    - Storage file between child and parent could have the wrong name,
       because $$ was used instead of parent_pid. (GH#9, reported by Lucien
       Coffe)
 
@@ -68,7 +69,7 @@ Revision history for Perl extension Parallel::ForkManager.
     - code churn: 4 files changed, 37 insertions(+), 4 deletions(-)
 
 1.17 2015-11-28
-  - Up Test::More's dependency version to v0.94 (because of 'subtest'). 
+  - Up Test::More's dependency version to v0.94 (because of 'subtest').
     (GH#8, mauke)
 
   [ STATISTICS ]
