@@ -422,7 +422,7 @@ Since version 2.00, the constructor can also be called in the typical Moo/Moose
 fashion. I.e.
 
     my $fm = Parallel::ForkManager->new(
-        max_procs => 4,
+        max_proc => 4,
         tempdir => '...',
         child_role => 'Parallel::ForkManager::CustomChild',
     );
