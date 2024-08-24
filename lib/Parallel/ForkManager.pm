@@ -12,7 +12,7 @@ use Parallel::ForkManager::Child;
 
 use strict;
 
-use Moo;
+use Moo 1.001000;
 
 has max_proc => (
     is => 'ro',
