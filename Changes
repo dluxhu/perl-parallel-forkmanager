@@ -4,6 +4,7 @@ Revision history for Perl extension Parallel::ForkManager.
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - Fix invalid default error when using old Moo (GH#41)
 
   [ DOCUMENTATION ]
   - Standardize the link to `fork`. (GH#32)
