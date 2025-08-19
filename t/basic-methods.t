@@ -1,20 +1,33 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 10;
 
 use Parallel::ForkManager;
 
 my $pm = Parallel::ForkManager->new(4);
 
 for(1..3) {
-    $pm->start and next;
+    $pm->start("proc $_") and next;
     sleep $_;
     $pm->finish;
 }
 
 my $nbr = $pm->running_procs;
 my @pids = $pm->running_procs;
+my %pwi = $pm->running_procs_with_identifiers;
+
+is_deeply(
+  [ sort keys %pwi ],
+  [ sort @pids ],
+  "running_procs_with_identifiers keys are pids",
+);
+
+is_deeply(
+  [ sort values %pwi ],
+  [ "proc 1", "proc 2", "proc 3" ],
+  "running_procs_with_identifiers values are as expected",
+);
 
 is $pm->max_procs => 4, 'max procs is 4';
 

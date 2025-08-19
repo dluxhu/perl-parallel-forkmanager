@@ -222,6 +222,11 @@ sub running_procs {
     return @pids;
 }
 
+sub running_procs_with_identifiers {
+    my $self = shift;
+    return %{ $self->{processes} };
+}
+
 sub wait_for_available_procs {
     my( $self, $nbr ) = @_;
     $nbr ||= 1;
@@ -497,6 +502,13 @@ C<start> or C<wait_all_children>.
     my @pids = $pm->running_procs;
 
     my $nbr_children = $pm->running_procs;
+
+=item running_procs_with_identifiers
+
+Returns a list of pairs.  The keys are the pids of forked processes (as
+returned by C<running_procs> and the values are the identifiers given to those
+pids by C<start>.  If no identifier was given for a process, the value for that
+pid will be undefined.
 
 =item wait_for_available_procs( $n )
 
