@@ -2,6 +2,7 @@ Revision history for Perl extension Parallel::ForkManager.
 
 {{$NEXT}}
  [API CHANGES]
+ - add 'running_procs_with_identifiers' method
 
  [BUG FIXES]
 
