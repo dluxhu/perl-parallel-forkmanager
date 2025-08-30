@@ -6,6 +6,7 @@ Revision history for Perl extension Parallel::ForkManager.
  [BUG FIXES]
 
  [DOCUMENTATION]
+ - Add a SECURITY document. (GH#44)
 
  [ENHANCEMENTS]
  - Add 'running_procs_with_identifiers' method
